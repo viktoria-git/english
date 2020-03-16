@@ -66,4 +66,12 @@ public class Word {
     public int hashCode() {
         return Objects.hash(id, word, translate, color);
     }
+
+    @Override
+    public String toString() {
+        return "Word" + id + ","
+                + word + ","
+                + translate + ","
+                + color;
+    }
 }
