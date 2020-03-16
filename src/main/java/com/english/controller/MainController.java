@@ -8,9 +8,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 
-@Controller // This means that this class is a Controller
+@Controller
 public class MainController {
     @Autowired
     MainController(WordRepository wordRepository) {
@@ -41,12 +43,8 @@ public class MainController {
     @RequestMapping(path = "/find", method = RequestMethod.GET) // Map ONLY POST Requests
     public String find(@RequestParam String searchedWord, Map<String, Object> model) {
         Word word = findWord(searchedWord);
-        if (word != null) {
-            model.put("words", transfer(findWord(searchedWord)));
-            //model.put("words", Collections.singletonList(word));
-            return "index";
-        }
-        return "redirect:/";
+        model.put("words", transfer(word));
+        return "index";
     }
 
     @RequestMapping(path = "/remove", method = RequestMethod.GET)
@@ -56,31 +54,19 @@ public class MainController {
     }
 
     private Iterator<WordTo> transfer(Word word) {
-        List<WordTo> wordTos = new ArrayList<>();
-        for (Word w : wordRepository.findAll()) {
-            if (word.equals(w)) {
-                wordTos.add(new WordTo(w, true));
-            } else {
-                wordTos.add(new WordTo(w, false));
-            }
-        }
-        return wordTos.iterator();
+        return StreamSupport.stream(wordRepository.findAll().spliterator(),false)
+                .map(w->new WordTo(w, word.equals(w)))
+                .collect(Collectors.toList()).iterator();
     }
 
     private Iterator<WordTo> transferTo() {
-        List<WordTo> wordTos = new ArrayList<>();
-        for (Word w : wordRepository.findAll()) {
-            wordTos.add(new WordTo(w, false));
-        }
-        return wordTos.iterator();
+        return StreamSupport.stream(wordRepository.findAll().spliterator(),false)
+                .map(word -> new WordTo(word,false))
+                .collect(Collectors.toList()).iterator();
     }
 
     private Word findWord(String searchedWord) {
-        for (Word word : wordRepository.findAll()) {
-            if (word.getWord().equals(searchedWord)) {
-                return word;
-            }
-        }
-        return null;
+        return StreamSupport.stream(wordRepository.findAll().spliterator(),false)
+                .filter(word -> word.getWord().equals(searchedWord)).findFirst().orElse(null);
     }
 }
