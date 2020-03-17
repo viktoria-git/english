@@ -17,4 +17,5 @@ public class WordMapper implements RowMapper<Word>{
         word.setColor(resultSet.getString("color"));
         return word;
     }
+
 }

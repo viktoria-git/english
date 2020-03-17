@@ -16,7 +16,8 @@ public enum Color {
         this.fieldName = fieldName;
     }
 
-    public static Color valueOf(int i) {
+    public static Color valueOf() {
+        int i = randColor();
         switch (i){
             case 1: return PRIMARY;
             case 2: return SECONDARY;
@@ -31,6 +32,10 @@ public enum Color {
 
     public String getFieldName() {
         return fieldName;
+    }
+
+    private static int randColor() {
+        return 1 + (int) (Math.random() * 7);
     }
 
 }

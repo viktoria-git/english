@@ -43,13 +43,33 @@
 
 </form>
 
+
+
 <div class="container">
     <table class="table">
         <thead>
         <tr class="table-success">
-            <th>Word</th>
-            <th>Translate</th>
-            <th>Delete</th>
+            <th>Word
+                <form method="get" style="margin: 0px;"  action="/sortByWord">
+                    <button type="submit" style="background: transparent;border: none;">
+                        <i class="icon-sort-by-alphabet"></i>
+                    </button>
+                </form>
+            </th>
+            <th>Translate
+                <form method="get" style="margin: 0px;"  action="/sortByTranslate">
+                    <button type="submit" style="background: transparent;border: none;">
+                        <i class="icon-sort-by-alphabet"></i>
+                    </button>
+                </form>
+            </th>
+            <th>Delete
+                <form method="get" style="margin: 0px;" action="/removeAll">
+                <button type="submit" style="background: transparent;border: none;">
+                    <i class="icon-remove-sign"></i>
+                </button>
+                </form>
+            </th>
         </tr>
         </thead>
         <c:forEach items="${words}" var="word">
@@ -67,6 +87,7 @@
         </c:forEach>
     </table>
 </div>
+
 
 </body>
 </html>
