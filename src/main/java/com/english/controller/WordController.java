@@ -27,7 +27,7 @@ public class WordController {
     @RequestMapping(path = "/add", method = RequestMethod.POST)
     public String add(@RequestParam String word, @RequestParam String translate) {
         service.create(word, translate, Color.valueOf().getFieldName());
-        return "redirect:/";
+        return REDIRECT;
     }
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
