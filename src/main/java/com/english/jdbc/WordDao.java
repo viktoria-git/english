@@ -7,7 +7,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class WordDao {
@@ -42,5 +44,24 @@ public class WordDao {
     public void remove(Integer id) {
         String sql = "DELETE FROM word WHERE id = ?";
         jdbcTemplate.update(sql,id);
+    }
+
+
+    public void removeAll() {
+        String sql = "DELETE FROM word WHERE id > 0";
+        jdbcTemplate.update(sql);
+    }
+
+    public List<Word> sortByWord(){
+        return sort(Comparator.comparing(Word::getWord));
+    }
+
+
+    public List<Word> sortByTranslate(){
+        return sort(Comparator.comparing(Word::getTranslate));
+    }
+
+    private List<Word> sort(Comparator<Word> comparator){
+        return getAll().stream().sorted(comparator).collect(Collectors.toList());
     }
 }
