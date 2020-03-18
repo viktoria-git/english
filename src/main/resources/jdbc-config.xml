@@ -13,9 +13,9 @@
         <property name="password" value="root"/>
     </bean>
 
-    <!-- Here we're defining studentJDBCTemplate bean -->
+    <!-- Here we're defining JDBCTemplate bean -->
     <bean id="jdbcTemplateWordDao"
-          class="com.english.jdbc.WordDao">
+          class="com.english.dao.WordDaoImpl">
         <property name="dataSource"  ref="dataSource" />
     </bean>
 
