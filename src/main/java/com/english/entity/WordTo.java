@@ -5,14 +5,14 @@ public class WordTo {
     private String word;
     private String translate;
     private String color;
-    private boolean isAllocated;
+    private boolean allocated;
 
     public WordTo(Word word) {
         this.id = word.getId();
         this.word = word.getWord();
         this.translate = word.getTranslate();
         this.color = word.getColor();
-        this.isAllocated = false;
+        this.allocated = false;
     }
 
     public Integer getId() {
@@ -46,10 +46,10 @@ public class WordTo {
     }
 
     public boolean isAllocated() {
-        return isAllocated;
+        return allocated;
     }
 
     public void setAllocated(boolean allocated) {
-        isAllocated = allocated;
+        this.allocated = allocated;
     }
 }
