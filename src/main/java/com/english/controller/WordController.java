@@ -38,8 +38,9 @@ public class WordController {
 
     @RequestMapping(path = "/find", method = RequestMethod.GET)
     public String find(@RequestParam String searchedWord, Map<String, Object> model) {
-        Word word = service.get(searchedWord);
-        model.put("words", insertAsFirst(word));
+        Word w = service.get(searchedWord);
+        List<Word> words = service.getAll();
+        model.put("words", Utils.insertAsFirst(w,words));
         return INDEX_PAGE;
     }
 
@@ -67,20 +68,11 @@ public class WordController {
        return refreshIndex(words, model);
     }
 
+    //generic Controller action
     private String refreshIndex(List<Word>words,Map<String, Object> model){
         List<WordTo> wordTos = Utils.transferTo(words);
         model.put("words", wordTos);
         return INDEX_PAGE;
     }
 
-    private Iterator<WordTo> insertAsFirst(Word word) {
-        List<WordTo> words = Utils.transferTo(service.getAll());
-        WordTo wordTo = new WordTo(word);
-        words.remove(wordTo);
-
-        wordTo.setAllocated(true);
-        words.add(0,wordTo);
-
-        return words.iterator();
-    }
 }

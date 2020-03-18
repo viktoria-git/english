@@ -4,9 +4,7 @@ import com.english.entity.Color;
 import com.english.entity.Word;
 import com.english.entity.WordTo;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Utils {
@@ -28,4 +26,18 @@ public class Utils {
                 .collect(Collectors.toList());
     }
 
+    public static Iterator<WordTo> insertAsFirst(Word word, List<Word>words) {
+        List<WordTo> wordTos = Utils.transferTo(words);
+        WordTo wordTo = new WordTo(word);
+        wordTos.remove(wordTo);
+
+        wordTo.setAllocated(true);
+        wordTos.add(0,wordTo);
+
+        return wordTos.iterator();
+    }
+
+    public static List<Word> sort(Comparator<Word> comparator, List<Word>words){
+        return words.stream().sorted(comparator).collect(Collectors.toList());
+    }
 }

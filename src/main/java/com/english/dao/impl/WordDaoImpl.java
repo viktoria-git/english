@@ -1,24 +1,24 @@
-package com.english.dao;
+package com.english.dao.impl;
 
+import com.english.dao.WordDao;
 import com.english.entity.Word;
+import com.english.util.Utils;
 import com.english.util.WordMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
-public class WordDaoImpl implements WordDao{
+public class WordDaoImpl implements WordDao {
 
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public void setDataSource(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    public WordDaoImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
@@ -58,15 +58,14 @@ public class WordDaoImpl implements WordDao{
     }
 
     public List<Word> sortByWord(){
-        return sort(Comparator.comparing(Word::getWord));
+        List<Word>words = getAll();
+        return Utils.sort(Comparator.comparing(Word::getWord),words);
     }
 
 
     public List<Word> sortByTranslate(){
-        return sort(Comparator.comparing(Word::getTranslate));
+        List<Word>words = getAll();
+        return Utils.sort(Comparator.comparing(Word::getTranslate),words);
     }
 
-    private List<Word> sort(Comparator<Word> comparator){
-        return getAll().stream().sorted(comparator).collect(Collectors.toList());
-    }
 }
