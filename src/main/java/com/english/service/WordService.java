@@ -1,24 +1,24 @@
 package com.english.service;
 
 import com.english.entity.Word;
-import com.english.jdbc.WordDao;
+import com.english.dao.WordDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component
+@Service
 public class WordService {
 
     WordDao jdbcTemplateWordDao;
 
     @Autowired
-    public WordService(WordDao jdbcTemplateWordDao){
+    public WordService(WordDao jdbcTemplateWordDao) {
         this.jdbcTemplateWordDao = jdbcTemplateWordDao;
     }
 
     public void create(String word, String translate, String color) {
-        jdbcTemplateWordDao.create(word,translate,color);
+        jdbcTemplateWordDao.create(word, translate, color);
     }
 
     public List<Word> getAll() {
