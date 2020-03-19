@@ -17,5 +17,4 @@ public interface WordDao {
     void remove(Integer id);
 
     void removeAll();
-
 }

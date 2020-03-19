@@ -36,7 +36,6 @@ public class WordController {
         return REDIRECT;
     }
 
-
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public String getAll(Map<String, Object> model) {
         log.info("getAll words");
@@ -87,6 +86,7 @@ public class WordController {
         return refreshIndex(words, model);
     }
 
+    //generic Controller action
     private String refreshIndex(List<WordTo> words, Map<String, Object> model) {
         model.put("topics", topicService.getAll());
         model.put("words", words);
