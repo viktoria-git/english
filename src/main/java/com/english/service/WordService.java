@@ -1,52 +1,82 @@
 package com.english.service;
 
+import com.english.dao.TopicDao;
 import com.english.entity.Word;
 import com.english.dao.WordDao;
+import com.english.entity.WordTo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class WordService {
 
-    WordDao jdbcTemplateWordDao;
+    WordDao wordDao;
+    TopicDao topicDao;
 
     @Autowired
-    public WordService(WordDao jdbcTemplateWordDao) {
-        this.jdbcTemplateWordDao = jdbcTemplateWordDao;
+    public WordService(WordDao jdbcTemplateWordDao, TopicDao topicDao) {
+        this.wordDao = jdbcTemplateWordDao;
+        this.topicDao = topicDao;
     }
 
-    public void create(String word, String translate, String color) {
-        jdbcTemplateWordDao.create(word, translate, color);
+    public void create(String word, String translate, Integer id) {
+        wordDao.create(word, translate, id);
     }
 
-    public List<Word> getAll() {
-        return jdbcTemplateWordDao.getAll();
+    public List<WordTo> getAll() {
+        List<Word> words = wordDao.getAll();
+        return words.stream()
+                .map(word -> new WordTo(word,topicDao.get(word.getTopicId())))
+                .collect(Collectors.toList());
     }
+
 
     public Word get(String word) {
-        return jdbcTemplateWordDao.get(word);
+        return wordDao.get(word);
     }
 
     public Word getById(Integer id) {
-        return jdbcTemplateWordDao.getById(id);
+        return wordDao.getById(id);
     }
 
     public void remove(Integer id) {
-        jdbcTemplateWordDao.remove(id);
+        wordDao.remove(id);
     }
 
     public void removeAll(){
-        jdbcTemplateWordDao.removeAll();
+        wordDao.removeAll();
     }
 
-    public List<Word> sortByWord() {
-        return jdbcTemplateWordDao.sortByWord();
+    public List<WordTo> sortByWord() {
+        return sort(Comparator.comparing(WordTo::getWord));
     }
 
-    public List<Word> sortByTranslate() {
-        return jdbcTemplateWordDao.sortByTranslate();
+    public List<WordTo> sortByTranslate() {
+        return sort(Comparator.comparing(WordTo::getTranslate));
     }
 
+    public List<WordTo> sortByTopic() {
+        return sort(Comparator.comparing(WordTo::getTopicName));
+    }
+
+    private List<WordTo> sort(Comparator<WordTo> comparator){
+        return getAll().stream().sorted(comparator).collect(Collectors.toList());
+    }
+
+
+    private Iterator<WordTo> insertAsFirst(Word word) {
+        List<WordTo> words = getAll();
+        WordTo wordTo = new WordTo(word, topicDao.get(word.getTopicId()));
+        words.remove(wordTo);
+
+        wordTo.setAllocated(true);
+        words.add(0, wordTo);
+
+        return words.iterator();
+    }
 }

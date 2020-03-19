@@ -1,4 +1,4 @@
-package com.english.util;
+package com.english.util.mapper;
 
 import com.english.entity.Word;
 import org.springframework.jdbc.core.RowMapper;
@@ -14,7 +14,7 @@ public class WordMapper implements RowMapper<Word>{
         word.setId(resultSet.getInt("id"));
         word.setWord(resultSet.getString("word"));
         word.setTranslate(resultSet.getString("translate"));
-        word.setColor(resultSet.getString("color"));
+        word.setTopicId(resultSet.getInt("topic_id"));
         return word;
     }
 

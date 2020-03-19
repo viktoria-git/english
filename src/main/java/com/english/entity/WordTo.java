@@ -6,13 +6,33 @@ public class WordTo {
     private String translate;
     private String color;
     private boolean allocated;
+    private Integer topicId;
+    private String topicName;
 
-    public WordTo(Word word) {
+    public WordTo(Word word, Topic topic) {
         this.id = word.getId();
         this.word = word.getWord();
         this.translate = word.getTranslate();
-        this.color = word.getColor();
+        this.color = topic.getColor();
+        this.topicId = word.getTopicId();
+        this.topicName = topic.getTopicName();
         this.allocated = false;
+    }
+
+    public Integer getTopicId() {
+        return topicId;
+    }
+
+    public void setTopicId(Integer topicId) {
+        this.topicId = topicId;
+    }
+
+    public String getTopicName() {
+        return topicName;
+    }
+
+    public void setTopicName(String topicName) {
+        this.topicName = topicName;
     }
 
     public Integer getId() {

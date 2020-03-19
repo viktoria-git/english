@@ -1,18 +1,19 @@
-package com.english.dao;
+package com.english.dao.impl;
 
+import com.english.dao.WordDao;
 import com.english.entity.Word;
-import com.english.util.WordMapper;
+import com.english.util.mapper.WordMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
-public class WordDaoImpl implements WordDao{
+public class WordDaoImpl implements WordDao {
 
     private JdbcTemplate jdbcTemplate;
 
@@ -22,9 +23,9 @@ public class WordDaoImpl implements WordDao{
     }
 
     @Override
-    public void create(String word, String translate, String color) {
-        String sql = "INSERT INTO word(word,translate,color) VALUES(?,?,?)";
-        jdbcTemplate.update(sql,word,translate,color);
+    public void create(String word, String translate, Integer topicId) {
+        String sql = "INSERT INTO word(word,translate,topic_id) VALUES(?,?,?)";
+        jdbcTemplate.update(sql,word,translate,topicId);
     }
 
     @Override
@@ -57,16 +58,4 @@ public class WordDaoImpl implements WordDao{
         jdbcTemplate.update(sql);
     }
 
-    public List<Word> sortByWord(){
-        return sort(Comparator.comparing(Word::getWord));
-    }
-
-
-    public List<Word> sortByTranslate(){
-        return sort(Comparator.comparing(Word::getTranslate));
-    }
-
-    private List<Word> sort(Comparator<Word> comparator){
-        return getAll().stream().sorted(comparator).collect(Collectors.toList());
-    }
 }

@@ -1,0 +1,1 @@
+alter table word drop column color;

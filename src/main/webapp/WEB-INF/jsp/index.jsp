@@ -39,6 +39,18 @@
         <label class="sr-only">Word</label>
         <input type="text" class="form-control" name="translate" placeholder="Translate" value="${param.translate}">
     </div>
+    <div class="form-group mx-sm-3 mb-2">
+        <label class="sr-only">Topic</label>
+
+        <select name="id" class="custom-select custom-select-sm">
+            <option selected>Choose topic</option>
+            <c:forEach items="${topics}" var="topic">
+                <jsp:useBean id="topic" type="com.english.entity.Topic"/>
+                <option value="${topic.id}">${topic.topicName}</option>
+            </c:forEach>
+        </select>
+
+    </div>
     <button type="submit" class="btn btn-danger">Add</button>
 
 </form>
@@ -63,11 +75,18 @@
                     </button>
                 </form>
             </th>
+            <th>Topic
+                <form method="get" style="margin: 0px;"  action="/sortByTopic">
+                    <button type="submit" style="background: transparent;border: none;">
+                        <i class="icon-sort-by-alphabet"></i>
+                    </button>
+                </form>
+            </th>
             <th>Delete
                 <form method="get" style="margin: 0px;" action="/removeAll">
-                <button type="submit" style="background: transparent;border: none;">
-                    <i class="icon-remove-sign"></i>
-                </button>
+                    <button type="submit" style="background: transparent;border: none;">
+                        <i class="icon-remove-sign"></i>
+                    </button>
                 </form>
             </th>
         </tr>
@@ -77,10 +96,12 @@
             <tr word-color="${word.color}" values="${word.allocated}" >
                 <td>${word.word}</td>
                 <td>${word.translate}</td>
+                <td>${word.topicName}</td>
                 <td>
                     <form class="table-form" method="get" action="/remove">
                         <input type="hidden" name="id" value="${word.id}"/>
-                        <button type="submit" id="delete-CSS"><i class="icon-remove"></i></button>
+                        <button type="submit" style="background: transparent;border: none;">
+                            <i class="icon-remove"></i></button>
                     </form>
                 </td>
             </tr>

@@ -7,7 +7,7 @@ tr[word-color="primary"] {
 }
 
 tr[word-color="secondary"] {
-    background-color: #dee0e2;
+    background-color: #5df8dc;
 }
 
 tr[word-color="success"] {
@@ -62,4 +62,5 @@ tr[values="true"]{
     position: absolute;
     left: 15px;
 }
+
 /*border: ridge;

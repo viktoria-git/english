@@ -15,7 +15,12 @@
 
     <!-- Here we're defining JDBCTemplate bean -->
     <bean id="jdbcTemplateWordDao"
-          class="com.english.dao.WordDaoImpl">
+          class="com.english.dao.impl.WordDaoImpl">
+        <property name="dataSource"  ref="dataSource" />
+    </bean>
+
+    <bean id="topicDaoImpl"
+          class="com.english.dao.impl.TopicDaoImpl">
         <property name="dataSource"  ref="dataSource" />
     </bean>
 
