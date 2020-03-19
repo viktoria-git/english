@@ -7,12 +7,12 @@ public class WordTo {
     private String color;
     private boolean allocated;
 
-    public WordTo(Word word, boolean isAllocated) {
+    public WordTo(Word word) {
         this.id = word.getId();
         this.word = word.getWord();
         this.translate = word.getTranslate();
         this.color = word.getColor();
-        this.allocated = isAllocated;
+        this.allocated = false;
     }
 
     public Integer getId() {

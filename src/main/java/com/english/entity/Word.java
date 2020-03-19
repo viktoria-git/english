@@ -6,7 +6,7 @@ public class Word {
     private Integer id;
     private String word;
     private String translate;
-    private String color = Color.valueOf(randColor()).getFieldName();
+    private String color;
 
     public Integer getId() {
         return id;
@@ -40,19 +40,16 @@ public class Word {
         this.color = color;
     }
 
-    private int randColor() {
-        return 1 + (int) (Math.random() * 7);
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Word word1 = (Word) o;
-        return Objects.equals(id, word1.id) &&
-                Objects.equals(word, word1.word) &&
-                Objects.equals(translate, word1.translate) &&
-                Objects.equals(color, word1.color);
+        Word word = (Word) o;
+        return Objects.equals(id, word.id) &&
+                Objects.equals(this.word, word.word) &&
+                Objects.equals(translate, word.translate) &&
+                Objects.equals(color, word.color);
     }
 
     @Override
@@ -67,4 +64,5 @@ public class Word {
                 + translate + ","
                 + color;
     }
+
 }

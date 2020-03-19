@@ -36,4 +36,17 @@ public class WordService {
     public void remove(Integer id) {
         jdbcTemplateWordDao.remove(id);
     }
+
+    public void removeAll(){
+        jdbcTemplateWordDao.removeAll();
+    }
+
+    public List<Word> sortByWord() {
+        return jdbcTemplateWordDao.sortByWord();
+    }
+
+    public List<Word> sortByTranslate() {
+        return jdbcTemplateWordDao.sortByTranslate();
+    }
+
 }

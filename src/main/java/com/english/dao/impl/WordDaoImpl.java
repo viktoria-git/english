@@ -1,22 +1,24 @@
-package com.english.dao;
+package com.english.dao.impl;
 
+import com.english.dao.WordDao;
 import com.english.entity.Word;
+import com.english.util.Utils;
 import com.english.util.WordMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
+import java.util.Comparator;
 import java.util.List;
 
 @Repository
-public class WordDaoImpl implements WordDao{
+public class WordDaoImpl implements WordDao {
 
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public void setDataSource(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    public WordDaoImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
@@ -48,4 +50,22 @@ public class WordDaoImpl implements WordDao{
         String sql = "DELETE FROM word WHERE id = ?";
         jdbcTemplate.update(sql,id);
     }
+
+
+    public void removeAll() {
+        String sql = "DELETE FROM word WHERE id > 0";
+        jdbcTemplate.update(sql);
+    }
+
+    public List<Word> sortByWord(){
+        List<Word>words = getAll();
+        return Utils.sort(Comparator.comparing(Word::getWord),words);
+    }
+
+
+    public List<Word> sortByTranslate(){
+        List<Word>words = getAll();
+        return Utils.sort(Comparator.comparing(Word::getTranslate),words);
+    }
+
 }

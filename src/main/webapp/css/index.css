@@ -40,13 +40,26 @@ tr[values="true"]{
     /*border: white;*/
 }
 
-#delete-CSS {
-    /*background-image: url("myimage.png");*/
-    background: transparent;
-    border: none;
-}
-
 .table-form{
     margin: auto;
+}
+
+.header-form{
+    margin: 3px;
+
+}
+
+
+#st-clear
+{
+    position: absolute;
+    bottom: 30px;
+    right: 400px;
+}
+
+#st-sort
+{
+    position: absolute;
+    left: 15px;
 }
 /*border: ridge;

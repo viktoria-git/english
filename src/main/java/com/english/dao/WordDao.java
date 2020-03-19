@@ -15,4 +15,10 @@ public interface WordDao {
     Word getById(Integer id);
 
     void remove(Integer id);
+
+    void removeAll();
+
+    List<Word> sortByWord();
+
+    List<Word> sortByTranslate();
 }
