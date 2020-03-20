@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.*;
 
 @Repository
 public class WordDaoImpl implements WordDao {
@@ -49,10 +49,31 @@ public class WordDaoImpl implements WordDao {
         jdbcTemplate.update(sql, id);
     }
 
-
+    @Override
     public void removeAll() {
         String sql = "DELETE FROM word WHERE id > 0";
         jdbcTemplate.update(sql);
     }
 
+    @Override
+    public List<Word> filter(Integer topicId, Integer levelId) {
+        String sql = "SELECT * FROM word WHERE topic_id = ? and level_id=?";
+        if((levelId ==0) && (topicId == 0)){
+            return getAll();
+        }
+        if (topicId == 0) {
+            sql = "SELECT * FROM word WHERE level_id=?";
+            return jdbcTemplate.query(sql, new Object[]{levelId}, new WordMapper());
+        }
+        if (levelId == 0) {
+            sql = "SELECT * FROM word WHERE topic_id = ?";
+            return jdbcTemplate.query(sql, new Object[]{topicId}, new WordMapper());
+        }
+        return jdbcTemplate.query(sql, new Object[]{topicId, levelId}, new WordMapper());
+    }
+
+    public List<Word> sort(String sort){
+        String sql = "SELECT * FROM word order by " + sort;
+        return jdbcTemplate.query(sql, new WordMapper());
+    }
 }

@@ -8,7 +8,7 @@
         <option selected value="0">Choose topic</option>
         <c:forEach items="${topics}" var="topic">
             <jsp:useBean id="topic" type="com.english.entity.Topic"/>
-            <option style="font-size: 18px;" value="${topic.id}">${topic.topicName}</option>
+            <option value="${topic.id}">${topic.topicName}</option>
         </c:forEach>
     </select>
 </div>

@@ -17,4 +17,9 @@ public interface WordDao {
     void remove(Integer id);
 
     void removeAll();
+
+    List<Word> filter(Integer topicId, Integer levelId);
+
+    List<Word> sort(String sort);
+
 }

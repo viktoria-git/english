@@ -8,7 +8,7 @@
         <option selected value="0">Choose level</option>
         <c:forEach items="${levels}" var="level">
             <jsp:useBean id="level" type="com.english.entity.Level"/>
-            <option style="font-size: 18px;" value="${level.id}">${level.levelName}</option>
+            <option value="${level.id}">${level.levelName}</option>
         </c:forEach>
     </select>
 </div>

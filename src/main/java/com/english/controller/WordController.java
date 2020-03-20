@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 
-
 @Controller
 @Validated
 public class WordController {
@@ -52,18 +51,19 @@ public class WordController {
         return refreshIndex(wordResponses, model);
     }
 
-
     @RequestMapping(path = "/sort", method = RequestMethod.GET)
-    public String getAll(Map<String, Object> model, @RequestParam String sort) {
+    public String sort(Map<String, Object> model, @RequestParam String sort) {
         log.info("getAll words");
         List<WordResponse> wordResponses = wordService.sort(sort);
         return refreshIndex(wordResponses, model);
     }
 
-    @RequestMapping(path = "/getAllFiltered", method = RequestMethod.GET)
-    public String getAllFiltered(Map<String, Object> model, @RequestParam Integer topicId) {
+    @RequestMapping(path = "/filter", method = RequestMethod.GET)
+    public String filter(Map<String, Object> model,
+                         @RequestParam Integer topicId,
+                         @RequestParam Integer levelId) {
         log.info("getAll filtered words");
-        List<WordResponse> wordResponses = wordService.getAllFiltered(topicId);
+        List<WordResponse> wordResponses = wordService.filter(topicId,levelId);
         return refreshIndex(wordResponses, model);
     }
 
@@ -71,8 +71,8 @@ public class WordController {
     public String find(@RequestParam String searchedWord, Map<String, Object> model) {
         Word word = wordService.get(searchedWord);
         log.info("get word {}", word);
-        model.put("words", wordService.insertAsFirst(word));
-        return INDEX_PAGE;
+        List<WordResponse> wordResponses = wordService.insertAsFirst(word);
+        return refreshIndex(wordResponses,model);
     }
 
     @RequestMapping(path = "/remove", method = RequestMethod.GET)

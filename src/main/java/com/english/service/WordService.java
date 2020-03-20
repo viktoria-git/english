@@ -5,7 +5,6 @@ import com.english.entity.Topic;
 import com.english.entity.Word;
 import com.english.dao.WordDao;
 import com.english.entity.WordResponse;
-import com.english.util.SortUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,16 +30,12 @@ public class WordService {
     }
 
     public List<WordResponse> getAllResponses() {
-        List<Word> words = wordDao.getAll();
-        return words.stream()
-                .map(this::createWordResponseFromWord)
-                .collect(Collectors.toList());
+        return createWordResponseListFromWordList(wordDao.getAll());
     }
 
-    public List<WordResponse> getAllFiltered(Integer id) {
-        return getAllResponses().stream()
-                .filter(word -> word.getTopicId().equals(id))
-                .collect(Collectors.toList());
+    public List<WordResponse> filter(Integer topicId, Integer levelId) {
+        List<Word> filteredWords = wordDao.filter(topicId, levelId);
+        return createWordResponseListFromWordList(filteredWords);
     }
 
     public Word get(String word) {
@@ -60,8 +55,8 @@ public class WordService {
     }
 
     public List<WordResponse> sort(String sort) {
-        List<WordResponse> wordResponses = getAllResponses();
-        return SortUtil.dispatchSort(wordResponses, sort);
+        List<Word> sortedWords = wordDao.sort(sort);
+        return createWordResponseListFromWordList(sortedWords);
     }
 
     public List<WordResponse> insertAsFirst(Word word) {
@@ -81,4 +76,9 @@ public class WordService {
         return new WordResponse(word, topic, level);
     }
 
+    private List<WordResponse> createWordResponseListFromWordList(List<Word> words) {
+        return words.stream()
+                .map(this::createWordResponseFromWord)
+                .collect(Collectors.toList());
+    }
 }
