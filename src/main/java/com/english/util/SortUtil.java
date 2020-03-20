@@ -18,7 +18,7 @@ public class SortUtil {
             case "topic":
                 return sort(wordResponses, WordResponse::getTopicName);
             case "level":
-                return sortByLevel(wordResponses, WordResponse::getId);
+                return sortByLevel(wordResponses, WordResponse::getLevelId);
         }
         return wordResponses;
     }
@@ -29,9 +29,10 @@ public class SortUtil {
                 .collect(Collectors.toList());
     }
 
-    private static List<WordResponse> sortByLevel(List<WordResponse> wordResponses, Function<WordResponse,Integer> func) {
+    private static List<WordResponse> sortByLevel(List<WordResponse> wordResponses, Function<WordResponse, Integer> func) {
         return wordResponses.stream()
                 .sorted(Comparator.comparing(func))
                 .collect(Collectors.toList());
     }
+
 }
