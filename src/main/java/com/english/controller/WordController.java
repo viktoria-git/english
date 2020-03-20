@@ -41,7 +41,7 @@ public class WordController {
                       @RequestParam @NotNull String translate,
                       @RequestParam Integer topicId, @RequestParam Integer levelId) {
         log.info("create word {}", word);
-        wordService.createWordResponseFromWord(word, translate, topicId, levelId);
+        wordService.create(word, translate, topicId, levelId);
         return REDIRECT;
     }
 

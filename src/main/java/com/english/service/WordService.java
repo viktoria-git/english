@@ -26,7 +26,7 @@ public class WordService {
         this.levelService = levelService;
     }
 
-    public void createWordResponseFromWord(String word, String translate, Integer topicId, Integer levelId) {
+    public void create(String word, String translate, Integer topicId, Integer levelId) {
         wordDao.create(word, translate, topicId, levelId);
     }
 
