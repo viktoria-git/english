@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 public class TopicService {
-    TopicDao topicDao;
+    private TopicDao topicDao;
 
     @Autowired
     public TopicService(TopicDao topicDao) {

@@ -1,40 +1,47 @@
 package com.english.service;
 
-import com.english.dao.TopicDao;
+import com.english.entity.Level;
+import com.english.entity.Topic;
 import com.english.entity.Word;
 import com.english.dao.WordDao;
-import com.english.entity.WordTo;
+import com.english.entity.WordResponse;
+import com.english.util.SortUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class WordService {
 
-    WordDao wordDao;
-    TopicDao topicDao;
+    private WordDao wordDao;
+    private TopicService topicService;
+    private LevelService levelService;
 
     @Autowired
-    public WordService(WordDao jdbcTemplateWordDao, TopicDao topicDao) {
-        this.wordDao = jdbcTemplateWordDao;
-        this.topicDao = topicDao;
+    public WordService(WordDao wordDao, TopicService topicService, LevelService levelService) {
+        this.wordDao = wordDao;
+        this.topicService = topicService;
+        this.levelService = levelService;
     }
 
-    public void create(String word, String translate, Integer id) {
-        wordDao.create(word, translate, id);
+    public void createWordResponseFromWord(String word, String translate, Integer topicId, Integer levelId) {
+        wordDao.create(word, translate, topicId, levelId);
     }
 
-    public List<WordTo> getAll() {
+    public List<WordResponse> getAllResponses() {
         List<Word> words = wordDao.getAll();
         return words.stream()
-                .map(word -> new WordTo(word,topicDao.get(word.getTopicId())))
+                .map(this::createWordResponseFromWord)
                 .collect(Collectors.toList());
     }
 
+    public List<WordResponse> getAllFiltered(Integer id) {
+        return getAllResponses().stream()
+                .filter(word -> word.getTopicId().equals(id))
+                .collect(Collectors.toList());
+    }
 
     public Word get(String word) {
         return wordDao.get(word);
@@ -48,35 +55,30 @@ public class WordService {
         wordDao.remove(id);
     }
 
-    public void removeAll(){
+    public void removeAll() {
         wordDao.removeAll();
     }
 
-    public List<WordTo> sortByWord() {
-        return sort(Comparator.comparing(WordTo::getWord));
+    public List<WordResponse> sort(String sort) {
+        List<WordResponse> wordResponses = getAllResponses();
+        return SortUtil.dispatchSort(wordResponses, sort);
     }
 
-    public List<WordTo> sortByTranslate() {
-        return sort(Comparator.comparing(WordTo::getTranslate));
+    public List<WordResponse> insertAsFirst(Word word) {
+        List<WordResponse> wordResponses = getAllResponses();
+        WordResponse wordResponse = createWordResponseFromWord(word);
+        wordResponses.remove(wordResponse);
+
+        wordResponse.setAllocated(true);
+        wordResponses.add(0, wordResponse);
+
+        return wordResponses;
     }
 
-    public List<WordTo> sortByTopic() {
-        return sort(Comparator.comparing(WordTo::getTopicName));
+    private WordResponse createWordResponseFromWord(Word word) {
+        Topic topic = topicService.get(word.getTopicId());
+        Level level = levelService.get(word.getLevelId());
+        return new WordResponse(word, topic, level);
     }
 
-    private List<WordTo> sort(Comparator<WordTo> comparator){
-        return getAll().stream().sorted(comparator).collect(Collectors.toList());
-    }
-
-
-    private Iterator<WordTo> insertAsFirst(Word word) {
-        List<WordTo> words = getAll();
-        WordTo wordTo = new WordTo(word, topicDao.get(word.getTopicId()));
-        words.remove(wordTo);
-
-        wordTo.setAllocated(true);
-        words.add(0, wordTo);
-
-        return words.iterator();
-    }
 }

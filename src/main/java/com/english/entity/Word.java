@@ -6,6 +6,15 @@ public class Word {
     private String translate;
     private String color;
     private Integer topicId;
+    private Integer levelId;
+
+    public Integer getLevelId() {
+        return levelId;
+    }
+
+    public void setLevelId(Integer levelId) {
+        this.levelId = levelId;
+    }
 
     public Integer getTopicId() {
         return topicId;

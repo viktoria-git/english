@@ -15,6 +15,7 @@ public class WordMapper implements RowMapper<Word>{
         word.setWord(resultSet.getString("word"));
         word.setTranslate(resultSet.getString("translate"));
         word.setTopicId(resultSet.getInt("topic_id"));
+        word.setLevelId(resultSet.getInt("level_id"));
         return word;
     }
 

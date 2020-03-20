@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface WordDao {
 
-    void create(String word, String translate, Integer id);
+    void create(String word, String translate, Integer topicId, Integer levelId);
 
     List<Word> getAll();
 

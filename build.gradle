@@ -7,10 +7,10 @@ plugins {
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
@@ -23,6 +23,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'javax.servlet:jstl'
     implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+    implementation 'org.apache.commons:commons-lang3:3.9'
     implementation 'mysql:mysql-connector-java'
     implementation 'org.flywaydb:flyway-core:6.3.1'
 
@@ -36,15 +37,12 @@ dependencies {
     testCompile 'ch.qos.logback.contrib:logback-jackson:0.1.5'
     testCompile 'com.fasterxml.jackson.core:jackson-databind:2.9.5'
     testCompile 'org.codehaus.janino:janino:3.0.8'
+    testCompile 'junit:junit:4.11'
+
+    testImplementation 'org.mockito:mockito-core:2.7.22'
+
 }
 
 test {
     useJUnitPlatform()
-}
-
-flyway {
-    url = 'jdbc:mysql://localhost:3306/english?characterEncoding=UTF-8'
-    user = 'root'
-    password = 'root'
-    schemas = ['english']
 }
