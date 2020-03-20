@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.2.2.RELEASE'
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
     id 'java'
+    id "org.flywaydb.flyway" version "6.3.1"
 }
 
 group = 'com.example'
@@ -23,8 +24,16 @@ dependencies {
     implementation 'javax.servlet:jstl'
     implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
     implementation 'mysql:mysql-connector-java'
+    implementation 'org.flywaydb:flyway-core:6.3.1'
 }
 
 test {
     useJUnitPlatform()
+}
+
+flyway {
+    url = 'jdbc:mysql://localhost:3306/english?characterEncoding=UTF-8'
+    user = 'root'
+    password = 'root'
+    schemas = ['english']
 }

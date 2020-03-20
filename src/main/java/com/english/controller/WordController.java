@@ -74,5 +74,4 @@ public class WordController {
         model.put("words", wordTos);
         return INDEX_PAGE;
     }
-
 }
