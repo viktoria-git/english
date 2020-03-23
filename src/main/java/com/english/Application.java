@@ -16,19 +16,19 @@ import java.util.Map;
 
 @SpringBootApplication
 public class Application {
-    @Autowired
-    private WordService wordService;
+//    @Autowired
+//    private WordService wordService;
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class,args);
     }
-
-    @PostConstruct
-    private void init() throws IOException {
-        wordService.removeAll();
-        Map<String, String> allWords = FileUtils.getAllWords();
-        List<Word> words = Utils.getListOfWords(allWords);
-        words.forEach(word -> wordService
-                .create(word.getWord(), word.getTranslate(), Color.valueOf().getFieldName()));
-    }
+//
+//    @PostConstruct
+//    private void init() throws IOException {
+//        wordService.removeAll(1);
+//        Map<String, String> allWords = FileUtils.getAllWords();
+//        List<Word> words = Utils.getListOfWords(allWords);
+//        words.forEach(word -> wordService
+//                .create(word.getWord(), word.getTranslate(), Color.valueOf().getFieldName(), word.getUserId()));
+//    }
 }

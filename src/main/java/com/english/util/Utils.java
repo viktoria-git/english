@@ -2,7 +2,7 @@ package com.english.util;
 
 import com.english.entity.Color;
 import com.english.entity.Word;
-import com.english.entity.WordTo;
+import com.english.entity.WordResponse;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -20,24 +20,24 @@ public class Utils {
         return words;
     }
 
-    public static List<WordTo> transferTo(List<Word> list) {
+    public static List<WordResponse> transferTo(List<Word> list) {
         return list.stream()
-                .map(WordTo::new)
+                .map(WordResponse::new)
                 .collect(Collectors.toList());
     }
 
-    public static Iterator<WordTo> insertAsFirst(Word word, List<Word>words) {
-        List<WordTo> wordTos = Utils.transferTo(words);
-        WordTo wordTo = new WordTo(word);
+    public static Iterator<WordResponse> insertAsFirst(Word word, List<Word> words) {
+        List<WordResponse> wordTos = Utils.transferTo(words);
+        WordResponse wordTo = new WordResponse(word);
         wordTos.remove(wordTo);
 
         wordTo.setAllocated(true);
-        wordTos.add(0,wordTo);
+        wordTos.add(0, wordTo);
 
         return wordTos.iterator();
     }
 
-    public static List<Word> sort(Comparator<Word> comparator, List<Word>words){
+    public static List<Word> sort(Comparator<Word> comparator, List<Word> words) {
         return words.stream().sorted(comparator).collect(Collectors.toList());
     }
 }

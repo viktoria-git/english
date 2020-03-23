@@ -3,14 +3,13 @@ package com.english.dao.impl;
 import com.english.dao.WordDao;
 import com.english.entity.Word;
 import com.english.util.Utils;
-import com.english.util.WordMapper;
+import com.english.util.mapper.WordMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 public class WordDaoImpl implements WordDao {
@@ -23,50 +22,50 @@ public class WordDaoImpl implements WordDao {
     }
 
     @Override
-    public void create(String word, String translate, String color) {
-        String sql = "INSERT INTO word(word,translate,color) VALUES(?,?,?)";
-        jdbcTemplate.update(sql,word,translate,color);
+    public void create(String word, String translate, String color, Integer userId) {
+        String sql = "INSERT INTO word(word,translate,color,user_id) VALUES(?,?,?,?)";
+        jdbcTemplate.update(sql, word, translate, color, userId);
     }
 
     @Override
-    public List<Word> getAll() {
-        String sql = "SELECT * FROM word";
-        return jdbcTemplate.query(sql,new WordMapper());
+    public List<Word> getAll(Integer userId) {
+        String sql = "SELECT * FROM word where user_id = ?";
+        return jdbcTemplate.query(sql, new Object[]{userId}, new WordMapper());
     }
 
     @Override
-    public Word get(String word) {
-        String sql = "SELECT * FROM word WHERE word=?";
-        return jdbcTemplate.queryForObject(sql,new Object[]{word},new WordMapper());
+    public Word get(Integer userId, String word) {
+        String sql = "SELECT * FROM word WHERE user_id = ? and word=?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{userId, word}, new WordMapper());
     }
 
     @Override
     public Word getById(Integer id) {
         String sql = "SELECT * FROM word WHERE ID = ?";
-        return jdbcTemplate.queryForObject(sql,new Object[]{id},new WordMapper());
+        return jdbcTemplate.queryForObject(sql, new Object[]{id}, new WordMapper());
     }
 
     @Override
-    public void remove(Integer id) {
-        String sql = "DELETE FROM word WHERE id = ?";
-        jdbcTemplate.update(sql,id);
+    public void remove(Integer userId, Integer id) {
+        String sql = "DELETE FROM word WHERE user_id = ? and id = ?";
+        jdbcTemplate.update(sql, userId, id);
     }
 
 
-    public void removeAll() {
+    public void removeAll(Integer userId) {
         String sql = "DELETE FROM word WHERE id > 0";
         jdbcTemplate.update(sql);
     }
 
-    public List<Word> sortByWord(){
-        List<Word>words = getAll();
-        return Utils.sort(Comparator.comparing(Word::getWord),words);
+    public List<Word> sortByWord(Integer userId) {
+        List<Word> words = getAll(userId);
+        return Utils.sort(Comparator.comparing(Word::getWord), words);
     }
 
 
-    public List<Word> sortByTranslate(){
-        List<Word>words = getAll();
-        return Utils.sort(Comparator.comparing(Word::getTranslate),words);
+    public List<Word> sortByTranslate(Integer userId) {
+        List<Word> words = getAll(userId);
+        return Utils.sort(Comparator.comparing(Word::getTranslate), words);
     }
 
 }

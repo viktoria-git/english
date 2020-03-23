@@ -7,7 +7,15 @@ public class Word {
     private String word;
     private String translate;
     private String color;
+    private Integer userId;
 
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
     public Integer getId() {
         return id;
     }

@@ -17,36 +17,36 @@ public class WordService {
         this.jdbcTemplateWordDao = jdbcTemplateWordDao;
     }
 
-    public void create(String word, String translate, String color) {
-        jdbcTemplateWordDao.create(word, translate, color);
+    public void create(String word, String translate, String color,Integer userId) {
+        jdbcTemplateWordDao.create(word, translate, color,userId);
     }
 
-    public List<Word> getAll() {
-        return jdbcTemplateWordDao.getAll();
+    public List<Word> getAll(Integer userId) {
+        return jdbcTemplateWordDao.getAll(userId);
     }
 
-    public Word get(String word) {
-        return jdbcTemplateWordDao.get(word);
+    public Word get(Integer userId,String word) {
+        return jdbcTemplateWordDao.get(userId,word);
     }
 
     public Word getById(Integer id) {
         return jdbcTemplateWordDao.getById(id);
     }
 
-    public void remove(Integer id) {
-        jdbcTemplateWordDao.remove(id);
+    public void remove(Integer userId,Integer id) {
+        jdbcTemplateWordDao.remove(userId,id);
     }
 
-    public void removeAll(){
-        jdbcTemplateWordDao.removeAll();
+    public void removeAll(Integer userId){
+        jdbcTemplateWordDao.removeAll(userId);
     }
 
-    public List<Word> sortByWord() {
-        return jdbcTemplateWordDao.sortByWord();
+    public List<Word> sortByWord(Integer userId) {
+        return jdbcTemplateWordDao.sortByWord(userId);
     }
 
-    public List<Word> sortByTranslate() {
-        return jdbcTemplateWordDao.sortByTranslate();
+    public List<Word> sortByTranslate(Integer userId) {
+        return jdbcTemplateWordDao.sortByTranslate(userId);
     }
 
 }
