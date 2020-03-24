@@ -18,10 +18,11 @@ import java.util.*;
 @Controller
 @Validated
 public class WordController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(WordController.class);
+
     private static final String INDEX_PAGE = "index";
     private static final String ERROR_PAGE = "error_page";
     private static final String REDIRECT = "redirect:/";
-    private Logger log = LoggerFactory.getLogger(WordController.class);
 
     private WordService wordService;
     private TopicService topicService;
@@ -39,21 +40,21 @@ public class WordController {
     public String add(@RequestParam @NotNull String word,
                       @RequestParam @NotNull String translate,
                       @RequestParam Integer topicId, @RequestParam Integer levelId) {
-        log.info("create word {}", word);
+        LOGGER.info("Create a new word {}", word);
         wordService.create(word, translate, topicId, levelId);
         return REDIRECT;
     }
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public String getAll(Map<String, Object> model) {
-        log.info("getAll words");
+        LOGGER.info("Get all words");
         List<WordResponse> wordResponses = wordService.getAllResponses();
         return refreshIndex(wordResponses, model);
     }
 
     @RequestMapping(path = "/sort", method = RequestMethod.GET)
     public String sort(Map<String, Object> model, @RequestParam String sort) {
-        log.info("getAll words");
+        LOGGER.info("Get all words");
         List<WordResponse> wordResponses = wordService.sort(sort);
         return refreshIndex(wordResponses, model);
     }
@@ -62,7 +63,7 @@ public class WordController {
     public String filter(Map<String, Object> model,
                          @RequestParam Integer topicId,
                          @RequestParam Integer levelId) {
-        log.info("getAll filtered words");
+        LOGGER.info("Get all filtered words");
         List<WordResponse> wordResponses = wordService.filter(topicId,levelId);
         return refreshIndex(wordResponses, model);
     }
@@ -70,21 +71,21 @@ public class WordController {
     @RequestMapping(path = "/find", method = RequestMethod.GET)
     public String find(@RequestParam String searchedWord, Map<String, Object> model) {
         Word word = wordService.get(searchedWord);
-        log.info("get word {}", word);
+        LOGGER.info("Get a word = {}", word);
         List<WordResponse> wordResponses = wordService.insertAsFirst(word);
         return refreshIndex(wordResponses,model);
     }
 
     @RequestMapping(path = "/remove", method = RequestMethod.GET)
     public String remove(@RequestParam Integer id) {
-        log.info("remove word with {} id", id);
+        LOGGER.info("Remove a word with id = {} ", id);
         wordService.remove(id);
         return REDIRECT;
     }
 
     @RequestMapping(path = "/removeAll", method = RequestMethod.GET)
     public String removeAll() {
-        log.info("remove all words");
+        LOGGER.info("Remove all words");
         wordService.removeAll();
         return REDIRECT;
     }
