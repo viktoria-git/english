@@ -7,7 +7,6 @@ plugins {
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
 
 repositories {
     mavenCentral()
@@ -25,15 +24,18 @@ dependencies {
     implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
     implementation 'mysql:mysql-connector-java'
     implementation 'org.flywaydb:flyway-core:6.3.1'
+
+    compile 'org.springframework.cloud:spring-cloud-starter-vault-config'
+
 }
 
 test {
     useJUnitPlatform()
 }
 
-flyway {
-    url = 'jdbc:mysql://localhost:3306/english?characterEncoding=UTF-8'
-    user = 'root'
-    password = 'root'
-    schemas = ['english']
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:Greenwich.SR2"
+    }
 }
