@@ -9,7 +9,8 @@ import java.util.List;
 
 @Service
 public class TopicService {
-    private TopicDao topicDao;
+
+    private final TopicDao topicDao;
 
     @Autowired
     public TopicService(TopicDao topicDao) {
@@ -20,6 +21,7 @@ public class TopicService {
         return topicDao.getAll();
     }
 
-    public Topic get(int id) {return topicDao.get(id);}
+    public Topic getById(Integer id) {return topicDao.getById(id);}
 
+    public Topic getByName(String topic) {return topicDao.getByName(topic);}
 }

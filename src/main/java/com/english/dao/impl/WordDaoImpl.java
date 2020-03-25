@@ -1,6 +1,7 @@
 package com.english.dao.impl;
 
 import com.english.dao.WordDao;
+import com.english.dao.builder.QueryBuilder;
 import com.english.entity.Word;
 import com.english.util.mapper.WordMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import java.util.*;
 @Repository
 public class WordDaoImpl implements WordDao {
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
     public WordDaoImpl(JdbcTemplate jdbcTemplate) {
@@ -57,22 +58,23 @@ public class WordDaoImpl implements WordDao {
 
     @Override
     public List<Word> filter(Integer topicId, Integer levelId) {
-        String sql = "SELECT * FROM word WHERE topic_id = ? and level_id=?";
-        if((levelId ==0) && (topicId == 0)){
-            return getAll();
+        QueryBuilder.Builder builder = new QueryBuilder.Builder().addSql("SELECT * FROM word");
+        if(levelId != 0){
+            builder.where()
+                    .addSql("level_id=?")
+                    .addParameter(levelId);
         }
-        if (topicId == 0) {
-            sql = "SELECT * FROM word WHERE level_id=?";
-            return jdbcTemplate.query(sql, new Object[]{levelId}, new WordMapper());
+        if(topicId != 0){
+            builder.and()
+                    .addSql("topic_id=?")
+                    .addParameter(topicId);
         }
-        if (levelId == 0) {
-            sql = "SELECT * FROM word WHERE topic_id = ?";
-            return jdbcTemplate.query(sql, new Object[]{topicId}, new WordMapper());
-        }
-        return jdbcTemplate.query(sql, new Object[]{topicId, levelId}, new WordMapper());
+
+        QueryBuilder query = builder.build();
+        return jdbcTemplate.query(query.getSql(), query.getParameters(), new WordMapper());
     }
 
-    public List<Word> sort(String sort){
+    public List<Word> sort(String sort) {
         String sql = "SELECT * FROM word order by " + sort;
         return jdbcTemplate.query(sql, new WordMapper());
     }

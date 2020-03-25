@@ -44,8 +44,8 @@
         <tr word-color="${word.color}" values="${word.allocated}">
             <td>${word.word}</td>
             <td>${word.translate}</td>
-            <td>${word.topicName}</td>
-            <td>${word.levelName}</td>
+            <td>${word.topic}</td>
+            <td>${word.level}</td>
             <td>
                 <form class="table-form" method="get" action="${pageContext.request.contextPath}/remove">
                     <input type="hidden" name="id" value="${word.id}"/>

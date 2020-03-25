@@ -8,13 +8,8 @@ public class WordResponse {
     private String translate;
     private String color;
     private boolean allocated;
-    private Integer topicId;
-    private String topicName;
-    private Integer levelId;
-    private String levelName;
-
-    public WordResponse() {
-    }
+    private String topic;
+    private String level;
 
     public WordResponse(Word word, Topic topic, Level level) {
         this.id = word.getId();
@@ -22,42 +17,24 @@ public class WordResponse {
         this.translate = word.getTranslate();
         this.allocated = false;
         this.color = topic.getColor();
-        this.topicId = word.getTopicId();
-        this.topicName = topic.getTopicName();
-        this.levelId = level.getId();
-        this.levelName = level.getLevelName();
+        this.topic = topic.getTopicName();
+        this.level = level.getLevelName();
     }
 
-    public Integer getLevelId() {
-        return levelId;
+    public String getLevel() {
+        return level;
     }
 
-    public void setLevelId(Integer levelId) {
-        this.levelId = levelId;
+    public void setLevel(String level) {
+        this.level = level;
     }
 
-    public String getLevelName() {
-        return levelName;
+    public String getTopic() {
+        return topic;
     }
 
-    public void setLevelName(String levelName) {
-        this.levelName = levelName;
-    }
-
-    public Integer getTopicId() {
-        return topicId;
-    }
-
-    public void setTopicId(Integer topicId) {
-        this.topicId = topicId;
-    }
-
-    public String getTopicName() {
-        return topicName;
-    }
-
-    public void setTopicName(String topicName) {
-        this.topicName = topicName;
+    public void setTopic(String topic) {
+        this.topic = topic;
     }
 
     public Integer getId() {
@@ -110,14 +87,12 @@ public class WordResponse {
                 Objects.equals(word, wordResponse.word) &&
                 Objects.equals(translate, wordResponse.translate) &&
                 Objects.equals(color, wordResponse.color) &&
-                Objects.equals(topicId, wordResponse.topicId) &&
-                Objects.equals(topicName, wordResponse.topicName) &&
-                Objects.equals(levelId, wordResponse.levelId) &&
-                Objects.equals(levelName, wordResponse.levelName);
+                Objects.equals(topic, wordResponse.topic) &&
+                Objects.equals(level, wordResponse.level);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, word, translate, color, allocated, topicId, topicName, levelId, levelName);
+        return Objects.hash(id, word, translate, color, allocated, topic, level);
     }
 }

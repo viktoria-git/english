@@ -11,7 +11,8 @@ import java.util.List;
 
 @Repository
 public class LevelDaoImpl implements LevelDao {
-    private JdbcTemplate jdbcTemplate;
+
+    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
     public LevelDaoImpl(JdbcTemplate jdbcTemplate) {
@@ -23,8 +24,14 @@ public class LevelDaoImpl implements LevelDao {
         return jdbcTemplate.query(sql, new LevelMapper());
     }
 
-    public Level get(Integer id) {
+    public Level getById(Integer id) {
         String sql = "SELECT * FROM level WHERE ID = ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{id}, new LevelMapper());
     }
+
+    public Level getByName(String level){
+        String sql = "SELECT * FROM level WHERE level_name = ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{level}, new LevelMapper());
+    }
+
 }

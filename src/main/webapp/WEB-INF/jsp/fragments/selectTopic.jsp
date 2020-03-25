@@ -4,11 +4,11 @@
 
 <div class="form-group mx-sm-3 mb-2">
     <label class="sr-only">Topic</label>
-    <select name="topicId" style="height: 38px;width: 210px;" class="custom-select custom-select-sm">
+    <select name="topic" style="height: 38px;width: 210px;" class="custom-select custom-select-sm">
         <option selected value="0">Choose topic</option>
         <c:forEach items="${topics}" var="topic">
             <jsp:useBean id="topic" type="com.english.entity.Topic"/>
-            <option value="${topic.id}">${topic.topicName}</option>
+            <option value="${topic.topicName}">${topic.topicName}</option>
         </c:forEach>
     </select>
 </div>

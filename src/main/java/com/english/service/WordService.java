@@ -8,15 +8,16 @@ import com.english.entity.WordResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class WordService {
 
-    private WordDao wordDao;
-    private TopicService topicService;
-    private LevelService levelService;
+    private final WordDao wordDao;
+    private final TopicService topicService;
+    private final LevelService levelService;
 
     @Autowired
     public WordService(WordDao wordDao, TopicService topicService, LevelService levelService) {
@@ -25,7 +26,9 @@ public class WordService {
         this.levelService = levelService;
     }
 
-    public void create(String word, String translate, Integer topicId, Integer levelId) {
+    public void create(String word, String translate, String topic, String level) {
+        Integer topicId = topicService.getByName(topic).getId();
+        Integer levelId = levelService.getByName(level).getId();
         wordDao.create(word, translate, topicId, levelId);
     }
 
@@ -33,17 +36,30 @@ public class WordService {
         return createWordResponseListFromWordList(wordDao.getAll());
     }
 
-    public List<WordResponse> filter(Integer topicId, Integer levelId) {
+    public List<WordResponse> filter(String topic, String level) {
+        Integer topicId = 0;
+        if (!topic.equals("0")) {
+            topicId = topicService.getByName(topic).getId();
+        }
+        Integer levelId = 0;
+        if (!level.equals("0")) {
+            levelId = levelService.getByName(level).getId();
+        }
         List<Word> filteredWords = wordDao.filter(topicId, levelId);
         return createWordResponseListFromWordList(filteredWords);
     }
 
-    public Word get(String word) {
-        return wordDao.get(word);
+    public List<WordResponse> findAndInsertAsFirst(String searchedWord) {
+        WordResponse wordResponse = get(searchedWord);
+        List<WordResponse> wordResponses = getAllResponses();
+        Collections.swap(wordResponses, 0, wordResponses.indexOf(wordResponse));
+        wordResponses.get(0).setAllocated(true);
+        return wordResponses;
     }
 
-    public Word getById(Integer id) {
-        return wordDao.getById(id);
+    public WordResponse get(String word) {
+        Word w = wordDao.get(word);
+        return createWordResponseFromWord(w);
     }
 
     public void remove(Integer id) {
@@ -59,20 +75,9 @@ public class WordService {
         return createWordResponseListFromWordList(sortedWords);
     }
 
-    public List<WordResponse> insertAsFirst(Word word) {
-        List<WordResponse> wordResponses = getAllResponses();
-        WordResponse wordResponse = createWordResponseFromWord(word);
-        wordResponses.remove(wordResponse);
-
-        wordResponse.setAllocated(true);
-        wordResponses.add(0, wordResponse);
-
-        return wordResponses;
-    }
-
     private WordResponse createWordResponseFromWord(Word word) {
-        Topic topic = topicService.get(word.getTopicId());
-        Level level = levelService.get(word.getLevelId());
+        Topic topic = topicService.getById(word.getTopicId());
+        Level level = levelService.getById(word.getLevelId());
         return new WordResponse(word, topic, level);
     }
 

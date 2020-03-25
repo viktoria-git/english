@@ -1,5 +1,6 @@
 package com.english.util.mapper;
 
+import com.english.entity.Topic;
 import com.english.entity.Word;
 import org.springframework.jdbc.core.RowMapper;
 

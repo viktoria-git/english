@@ -9,7 +9,8 @@ import java.util.List;
 
 @Service
 public class LevelService {
-    private LevelDao levelDao;
+
+    private final LevelDao levelDao;
 
     @Autowired
     public LevelService(LevelDao levelDao) {
@@ -20,7 +21,7 @@ public class LevelService {
         return levelDao.getAll();
     }
 
-    public Level get(int id) {
-        return levelDao.get(id);
-    }
+    public Level getById(Integer id) {return levelDao.getById(id);}
+
+    public Level getByName(String level) {return levelDao.getByName(level);}
 }

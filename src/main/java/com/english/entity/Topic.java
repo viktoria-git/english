@@ -3,7 +3,7 @@ package com.english.entity;
 import java.util.Objects;
 
 public class Topic {
-    private int id;
+    private Integer id;
     private String topicName;
     private String color;
 
@@ -15,11 +15,11 @@ public class Topic {
         this.color = color;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -36,7 +36,7 @@ public class Topic {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Topic topic = (Topic) o;
-        return id == topic.id &&
+        return Objects.equals(id, topic.id) &&
                 Objects.equals(topicName, topic.topicName) &&
                 Objects.equals(color, topic.color);
     }

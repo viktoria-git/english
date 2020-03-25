@@ -1,5 +1,5 @@
 # Creating table Word
-create table word(
+create table if not exists word(
     `id` int not null auto_increment primary key,
     `word` varchar(50) null,
     `translate` varchar(50) null,
@@ -15,7 +15,7 @@ create table if not exists `topic`(
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
 # Creating table Level
-create table level(
+create table if not exists level(
                       `id` int not null auto_increment primary key,
                       `level_name` varchar(20) null
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;

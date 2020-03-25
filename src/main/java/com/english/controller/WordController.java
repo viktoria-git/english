@@ -1,6 +1,5 @@
 package com.english.controller;
 
-import com.english.entity.Word;
 import com.english.entity.WordResponse;
 import com.english.service.LevelService;
 import com.english.service.TopicService;
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 import java.util.*;
 
 @Controller
@@ -24,9 +23,9 @@ public class WordController {
     private static final String ERROR_PAGE = "error_page";
     private static final String REDIRECT = "redirect:/";
 
-    private WordService wordService;
-    private TopicService topicService;
-    private LevelService levelService;
+    private final WordService wordService;
+    private final TopicService topicService;
+    private final LevelService levelService;
 
     @Autowired
     public WordController(WordService service, TopicService topicService,
@@ -37,11 +36,12 @@ public class WordController {
     }
 
     @RequestMapping(path = "/add", method = RequestMethod.POST)
-    public String add(@RequestParam @NotNull String word,
-                      @RequestParam @NotNull String translate,
-                      @RequestParam Integer topicId, @RequestParam Integer levelId) {
-        LOGGER.info("Create a new word {}", word);
-        wordService.create(word, translate, topicId, levelId);
+    public String add(@RequestParam @NotEmpty String word,
+                      @RequestParam @NotEmpty String translate,
+                      @RequestParam String topic, @RequestParam String level) {
+        LOGGER.info("Create a new word: {}, translate: {} with topic = {} and level = {}",
+                word, translate, topic, level);
+        wordService.create(word, translate, topic, level);
         return REDIRECT;
     }
 
@@ -61,19 +61,18 @@ public class WordController {
 
     @RequestMapping(path = "/filter", method = RequestMethod.GET)
     public String filter(Map<String, Object> model,
-                         @RequestParam Integer topicId,
-                         @RequestParam Integer levelId) {
+                         @RequestParam String topic,
+                         @RequestParam String level) {
         LOGGER.info("Get all filtered words");
-        List<WordResponse> wordResponses = wordService.filter(topicId,levelId);
+        List<WordResponse> wordResponses = wordService.filter(topic, level);
         return refreshIndex(wordResponses, model);
     }
 
     @RequestMapping(path = "/find", method = RequestMethod.GET)
     public String find(@RequestParam String searchedWord, Map<String, Object> model) {
-        Word word = wordService.get(searchedWord);
-        LOGGER.info("Get a word = {}", word);
-        List<WordResponse> wordResponses = wordService.insertAsFirst(word);
-        return refreshIndex(wordResponses,model);
+        LOGGER.info("Get a word = {}", searchedWord);
+        List<WordResponse> wordResponses = wordService.findAndInsertAsFirst(searchedWord);
+        return refreshIndex(wordResponses, model);
     }
 
     @RequestMapping(path = "/remove", method = RequestMethod.GET)
