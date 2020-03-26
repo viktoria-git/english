@@ -7,7 +7,7 @@ tr[word-color="primary"] {
 }
 
 tr[word-color="secondary"] {
-    background-color: #dee0e2;
+    background-color: #5df8dc;
 }
 
 tr[word-color="success"] {
@@ -35,8 +35,8 @@ tr[word-color="light"] {
 }
 
 tr[values="true"]{
-    box-shadow: inset 0 0 8px 1px dodgerblue;
-    background-color: azure;
+    box-shadow: inset 0 0 14px 3px darkslategrey;
+    background-color: white;
     /*border: white;*/
 }
 
@@ -48,7 +48,29 @@ tr[values="true"]{
     margin: 3px;
 
 }
-
+.button-icon-style{
+    color: white;
+    background: transparent;
+    border: none;
+}
+#button-type-submit-filter{
+    background: slategray;
+    border: slategray;
+    height: 38px;
+    position: relative;
+    left: 17px;
+}
+#button-type-submit-find{
+    background: slategray;
+    border: slategray;
+    height: 38px;
+    position: relative;
+    left: 17px;
+}
+#button-type-submit{
+    background: slategray;
+    border: slategray;
+}
 
 #st-clear
 {
@@ -62,4 +84,5 @@ tr[values="true"]{
     position: absolute;
     left: 15px;
 }
+
 /*border: ridge;
