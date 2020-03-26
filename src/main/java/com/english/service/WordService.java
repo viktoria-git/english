@@ -32,7 +32,7 @@ public class WordService {
         wordDao.create(word, translate, topicId, levelId);
     }
 
-    public List<WordResponse> getAllResponses() {
+    public List<WordResponse> getAllWordResponses() {
         return createWordResponseListFromWordList(wordDao.getAll());
     }
 
@@ -51,7 +51,7 @@ public class WordService {
 
     public List<WordResponse> findAndInsertAsFirst(String searchedWord) {
         WordResponse wordResponse = get(searchedWord);
-        List<WordResponse> wordResponses = getAllResponses();
+        List<WordResponse> wordResponses = getAllWordResponses();
         Collections.swap(wordResponses, 0, wordResponses.indexOf(wordResponse));
         wordResponses.get(0).setAllocated(true);
         return wordResponses;

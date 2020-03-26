@@ -48,7 +48,7 @@ public class WordController {
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public String getAll(Map<String, Object> model) {
         LOGGER.info("Get all words");
-        List<WordResponse> wordResponses = wordService.getAllResponses();
+        List<WordResponse> wordResponses = wordService.getAllWordResponses();
         return refreshIndex(wordResponses, model);
     }
 
