@@ -69,6 +69,29 @@ tr[values="true"]{
     background: transparent;
     border: none;
 }
+#button-type-submit-filter{
+    background: slategray;
+    border: slategray;
+    height: 38px;
+    position: relative;
+    left: 17px;
+}
+#button-type-submit-find{
+    background: slategray;
+    border: slategray;
+    height: 38px;
+    position: relative;
+    left: 17px;
+}
+#button-type-submit{
+    background: slategray;
+    border: slategray;
+}
+.button-icon-style{
+    color: white;
+    background: transparent;
+    border: none;
+}
 #button-type-submit-filterLevel{
     background: slategray;
     border: slategray;
@@ -125,5 +148,6 @@ tr[values="true"]{
     position: relative;
     top: 250px;
 }
+
 
 /*border: ridge;

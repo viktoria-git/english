@@ -1,20 +1,21 @@
 package com.english.dao.impl;
 
 import com.english.dao.WordDao;
+import com.english.dao.builder.QueryBuilder;
 import com.english.entity.Word;
-import com.english.util.Utils;
 import com.english.util.mapper.WordMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.*;
 import java.util.Comparator;
 import java.util.List;
 
 @Repository
 public class WordDaoImpl implements WordDao {
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
     public WordDaoImpl(JdbcTemplate jdbcTemplate) {
@@ -61,11 +62,27 @@ public class WordDaoImpl implements WordDao {
         List<Word> words = getAll(userId);
         return Utils.sort(Comparator.comparing(Word::getWord), words);
     }
+    @Override
+    public List<Word> filter(Integer topicId, Integer levelId) {
+        QueryBuilder.Builder builder = new QueryBuilder.Builder().addSql("SELECT * FROM word");
+        if(levelId != 0){
+            builder.where()
+                    .addSql("level_id=?")
+                    .addParameter(levelId);
+        }
+        if(topicId != 0){
+            builder.and()
+                    .addSql("topic_id=?")
+                    .addParameter(topicId);
+        }
 
+        QueryBuilder query = builder.build();
+        return jdbcTemplate.query(query.getSql(), query.getParameters(), new WordMapper());
+    }
 
-    public List<Word> sortByTranslate(Integer userId) {
-        List<Word> words = getAll(userId);
-        return Utils.sort(Comparator.comparing(Word::getTranslate), words);
+    public List<Word> sort(String sort) {
+        String sql = "SELECT * FROM word order by " + sort;
+        return jdbcTemplate.query(sql, new WordMapper());
     }
 
 }

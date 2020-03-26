@@ -6,19 +6,32 @@
     <thead class="thead-dark">
     <tr class="table-success">
         <th>Word
-            <form method="get" style="margin: 0;" action="/sort">
+            <form method="get" style="margin: 0;" action="${pageContext.request.contextPath}/sort">
                 <input type="hidden" name="sort" value="word">
                 <jsp:include page="./buttonWithIconSort.jsp"/>
             </form>
         </th>
         <th>Translate
-            <form method="get" style="margin: 0;" action="/sort">
+            <form method="get" style="margin: 0;" action="${pageContext.request.contextPath}/sort">
                 <input type="hidden" name="sort" value="translate">
                 <jsp:include page="./buttonWithIconSort.jsp"/>
             </form>
         </th>
+        <th>Topic
+            <form method="get" style="margin: 0;" action="${pageContext.request.contextPath}/sort">
+                <input type="hidden" name="sort" value="topic_id">
+                <jsp:include page="./buttonWithIconSort.jsp"/>
+            </form>
+        </th>
+        <th>
+            Level
+            <form method="get" style="margin: 0;" action="${pageContext.request.contextPath}/sort">
+                <input type="hidden" name="sort" value="level_id">
+                <jsp:include page="./buttonWithIconSort.jsp"/>
+            </form>
+        </th>
         <th>Delete
-            <form method="get" style="margin: 0;" action="/removeAll">
+            <form method="get" style="margin: 0;" action="${pageContext.request.contextPath}/removeAll">
                 <button type="submit" class="button-icon-style">
                     <i class="icon-remove-sign"></i>
                 </button>
@@ -31,6 +44,8 @@
         <tr word-color="${word.color}" values="${word.allocated}">
             <td>${word.word}</td>
             <td>${word.translate}</td>
+            <td>${word.topic}</td>
+            <td>${word.level}</td>
             <td>
                 <form class="table-form" method="get" action="/remove">
                     <input type="hidden" name="id" value="${word.id}"/>
