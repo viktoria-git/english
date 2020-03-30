@@ -12,8 +12,6 @@ public interface WordDao {
 
     Word get(Integer userId, String word);
 
-    boolean contains(Integer userId, String word);
-
     void remove(Integer userId, Integer id);
 
     void removeAll(Integer userId);

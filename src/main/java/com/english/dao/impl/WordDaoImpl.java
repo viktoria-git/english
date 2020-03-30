@@ -41,15 +41,6 @@ public class WordDaoImpl implements WordDao {
     }
 
     @Override
-    public boolean contains(Integer userId, String word) {
-        try {
-            return get(userId, word) != null;
-        } catch (EmptyResultDataAccessException e) {
-            return false;
-        }
-    }
-
-    @Override
     public void remove(Integer userId, Integer id) {
         String sql = "DELETE FROM word WHERE user_id = ? and id = ?";
         jdbcTemplate.update(sql, userId, id);

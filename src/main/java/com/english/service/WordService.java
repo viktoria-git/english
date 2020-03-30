@@ -8,6 +8,7 @@ import com.english.entity.WordResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +32,7 @@ public class WordService {
         int userId = userService.getUserId();
         int topicId = topic.equals("0") ? 10 : topicService.get(topic).getId();
         int levelId = level.equals("0") ? 1 : levelService.get(level).getId();
-        if (!wordDao.contains(userId, word)) {
+        if (wordDao.get(userId, word) == null) {
             wordDao.create(word, translate, userId, topicId, levelId);
         }
     }
@@ -50,11 +51,9 @@ public class WordService {
         return createWordResponseListFromWordList(filteredWords);
     }
 
-    public Word get(String word) {
+    public WordResponse get(String word) {
         int userId = userService.getUserId();
-        if (wordDao.contains(userId, word)) {
-            return wordDao.get(userId, word);
-        } else return null;
+        return createWordResponseFromWord(wordDao.get(userId, word));
     }
 
     public void remove(Integer id) {
@@ -73,23 +72,18 @@ public class WordService {
         return createWordResponseListFromWordList(sortedWords);
     }
 
-    public List<WordResponse> find(String word) {
+
+    public List<WordResponse> find(String searchedWord) {
         int userId = userService.getUserId();
-        if (wordDao.contains(userId, word)) {
-            Word searchedWord = get(word);
-            return insertAsFirst(searchedWord);
-        } else return null;
-    }
+        Word word = wordDao.get(userId, searchedWord);
+        if (word != null) {
+            WordResponse wordResponse = createWordResponseFromWord(word);
+            List<WordResponse> wordResponses = getAllWordResponses();
+            Collections.swap(wordResponses, 0, wordResponses.indexOf(wordResponse));
+            wordResponses.get(0).setAllocated(true);
+            return wordResponses;
 
-    public List<WordResponse> insertAsFirst(Word word) {
-        List<WordResponse> wordResponses = getAllWordResponses();
-        WordResponse wordResponse = createWordResponseFromWord(word);
-        wordResponses.remove(wordResponse);
-
-        wordResponse.setAllocated(true);
-        wordResponses.add(0, wordResponse);
-
-        return wordResponses;
+        } else return getAllWordResponses();
     }
 
     private WordResponse createWordResponseFromWord(Word word) {
