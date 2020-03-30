@@ -51,9 +51,9 @@ public class WordService {
         return createWordResponseListFromWordList(filteredWords);
     }
 
-    public WordResponse get(String word) {
+    public Word get(String word) {
         int userId = userService.getUserId();
-        return createWordResponseFromWord(wordDao.get(userId, word));
+        return wordDao.get(userId, word);
     }
 
     public void remove(Integer id) {
@@ -82,7 +82,6 @@ public class WordService {
             Collections.swap(wordResponses, 0, wordResponses.indexOf(wordResponse));
             wordResponses.get(0).setAllocated(true);
             return wordResponses;
-
         } else return getAllWordResponses();
     }
 
