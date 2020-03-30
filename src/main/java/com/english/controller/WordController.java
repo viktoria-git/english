@@ -35,7 +35,7 @@ public class WordController {
 
     @RequestMapping(path = "/vocabulary", method = RequestMethod.GET)
     public String getAll(Map<String, Object> model) {
-        LOGGER.info("getAll words");
+        LOGGER.info("Get all words");
         List<WordResponse> wordResponses = wordService.getAllWordResponses();
         return updateListOfWordResponses(wordResponses, model);
     }
@@ -87,7 +87,7 @@ public class WordController {
             LOGGER.info("Vocabulary doesn`t exists word = {}", word);
             return getAll(model);
         }
-        LOGGER.info("get word {}", word);
+        LOGGER.info("Get word {}", word);
         return updateListOfWordResponses(wordResponses, model);
     }
 
