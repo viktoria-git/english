@@ -1,43 +1,67 @@
+p{
+    position: relative;
+    left: 18px;
+    top: 12px;
+    color: slategray;
+}
+option{
+    font-size: 15px;
+}
+
 td,th {
     text-align: center; /* Выравниваем текст по центру ячейки */
 }
 
-tr[word-color="primary"] {
-    background-color: #c6dbf3;
+tr[word-color="travel"] {
+    background-color: #c9ffd1;
 }
 
-tr[word-color="secondary"] {
-    background-color: #dee0e2;
+tr[word-color="work"] {
+    background-color: #5df8dc;
 }
 
-tr[word-color="success"] {
+tr[word-color="movie"] {
     background-color: #caffd0;
 }
 
-tr[word-color="danger"] {
+tr[word-color="social"] {
     background-color: #ffbdc6;
 }
 
-tr[word-color="warning"] {
+tr[word-color="medicine"] {
     background-color: #f8ffce;
 }
 
-tr[word-color="info"] {
+tr[word-color="sport"] {
     background-color: #d1fffc;
 }
 
-tr[word-color="dark"] {
-    background-color: #cdd0db;
+tr[word-color="technology"] {
+    background-color: #9be3f0;
 }
 
-tr[word-color="light"] {
-    background-color: #f8fff9;
+tr[word-color="clothes"] {
+    background-color: #ffeec0;
+}
+
+tr[word-color="hobby"] {
+    background-color: #ffcdf5;
+}
+
+tr[word-color="other"] {
+    background-color: #dde2de;
 }
 
 tr[values="true"]{
-    box-shadow: inset 0 0 8px 1px dodgerblue;
-    background-color: azure;
+    box-shadow: inset 0 0 14px 3px white;
+    background-color: white;
     /*border: white;*/
+}
+
+.table td{
+    padding: .75rem;
+    vertical-align: top;
+    border-top: 1px solid #a5bbc7;
 }
 
 .table-form{
@@ -48,7 +72,70 @@ tr[values="true"]{
     margin: 3px;
 
 }
+.button-icon-style{
+    color: white;
+    background: transparent;
+    border: none;
+}
+#button-type-submit-filter{
+    background: slategray;
+    border: slategray;
+    height: 38px;
+    position: relative;
+    left: 17px;
+}
+#button-type-submit-find{
+    background: slategray;
+    border: slategray;
+    height: 38px;
+    position: relative;
+    left: 17px;
+}
+#button-type-submit{
+    background: slategray;
+    border: slategray;
+}
+.button-icon-style{
+    color: white;
+    background: transparent;
+    border: none;
+}
+#button-type-submit-filterLevel{
+    background: slategray;
+    border: slategray;
+    height: 38px;
+    position: relative;
+    left: 17px;
+}
 
+#button-type-submit-filterTopic{
+    background: slategray;
+    border: slategray;
+    height: 38px;
+    position: relative;
+    left: 17px;
+}
+
+#button-type-submit-find{
+    background: slategray;
+    border: slategray;
+    height: 38px;
+    position: relative;
+    left: 17px;
+}
+
+#button-type-submit-getAll{
+    background: slategray;
+    border: slategray;
+    height: 38px;
+    position: relative;
+    left: 17px;
+}
+
+#button-type-submit{
+    background: slategray;
+    border: slategray;
+}
 
 #st-clear
 {
@@ -62,4 +149,13 @@ tr[values="true"]{
     position: absolute;
     left: 15px;
 }
+
+.login {
+    width: 30%;
+    margin: 0 auto;
+    position: relative;
+    top: 250px;
+}
+
+
 /*border: ridge;

@@ -1,12 +1,37 @@
 package com.english.entity;
 
-import java.util.Objects;
-
 public class Word {
     private Integer id;
     private String word;
     private String translate;
     private String color;
+    private Integer userId;
+    private Integer topicId;
+    private Integer levelId;
+
+    public Integer getLevelId() {
+        return levelId;
+    }
+
+    public void setLevelId(Integer levelId) {
+        this.levelId = levelId;
+    }
+
+    public Integer getTopicId() {
+        return topicId;
+    }
+
+    public void setTopicId(Integer topicId) {
+        this.topicId = topicId;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 
     public Integer getId() {
         return id;
@@ -39,30 +64,4 @@ public class Word {
     public void setColor(String color) {
         this.color = color;
     }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Word word = (Word) o;
-        return Objects.equals(id, word.id) &&
-                Objects.equals(this.word, word.word) &&
-                Objects.equals(translate, word.translate) &&
-                Objects.equals(color, word.color);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, word, translate, color);
-    }
-
-    @Override
-    public String toString() {
-        return "Word" + id + ","
-                + word + ","
-                + translate + ","
-                + color;
-    }
-
 }

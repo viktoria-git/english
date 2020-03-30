@@ -1,4 +1,4 @@
-package com.english.util;
+package com.english.util.mapper;
 
 import com.english.entity.Word;
 import org.springframework.jdbc.core.RowMapper;
@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class WordMapper implements RowMapper<Word>{
+public class WordMapper implements RowMapper<Word> {
 
     @Override
     public Word mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -14,7 +14,9 @@ public class WordMapper implements RowMapper<Word>{
         word.setId(resultSet.getInt("id"));
         word.setWord(resultSet.getString("word"));
         word.setTranslate(resultSet.getString("translate"));
-        word.setColor(resultSet.getString("color"));
+        word.setTopicId(resultSet.getInt("user_id"));
+        word.setTopicId(resultSet.getInt("topic_id"));
+        word.setLevelId(resultSet.getInt("level_id"));
         return word;
     }
 
