@@ -12,36 +12,44 @@ td,th {
     text-align: center; /* Выравниваем текст по центру ячейки */
 }
 
-tr[word-color="primary"] {
-    background-color: #c6dbf3;
+tr[word-color="travel"] {
+    background-color: #c9ffd1;
 }
 
-tr[word-color="secondary"] {
+tr[word-color="work"] {
     background-color: #5df8dc;
 }
 
-tr[word-color="success"] {
+tr[word-color="movie"] {
     background-color: #caffd0;
 }
 
-tr[word-color="danger"] {
+tr[word-color="social"] {
     background-color: #ffbdc6;
 }
 
-tr[word-color="warning"] {
+tr[word-color="medicine"] {
     background-color: #f8ffce;
 }
 
-tr[word-color="info"] {
+tr[word-color="sport"] {
     background-color: #d1fffc;
 }
 
-tr[word-color="dark"] {
-    background-color: #cdd0db;
+tr[word-color="technology"] {
+    background-color: #9be3f0;
 }
 
-tr[word-color="light"] {
-    background-color: #f8fff9;
+tr[word-color="clothes"] {
+    background-color: #ffeec0;
+}
+
+tr[word-color="hobby"] {
+    background-color: #ffcdf5;
+}
+
+tr[word-color="other"] {
+    background-color: #dde2de;
 }
 
 tr[values="true"]{

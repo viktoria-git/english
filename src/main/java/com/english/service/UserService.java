@@ -3,11 +3,12 @@ package com.english.service;
 import com.english.dao.UserDao;
 import com.english.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-    private UserDao userDao;
+    private final UserDao userDao;
 
     @Autowired
     public UserService(UserDao userDao) {
@@ -29,4 +30,10 @@ public class UserService {
     public void save(String username, String email, String password) {
         userDao.save(username, email, password);
     }
+
+    public Integer getUserId() {
+        String username = ((org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+        return getUserId(username);
+    }
 }
+

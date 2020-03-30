@@ -1,5 +1,6 @@
-package com.english.controller;
+package com.english.controller.security;
 
+import com.english.controller.WordController;
 import com.english.entity.User;
 import com.english.service.UserService;
 import org.slf4j.Logger;
@@ -11,9 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class RegistrationController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(WordController.class);
 
-    private UserService userService;
-    private Logger log = LoggerFactory.getLogger(WordController.class);
+    private final UserService userService;
 
     @Autowired
     public RegistrationController(UserService userService) {
@@ -22,7 +23,7 @@ public class RegistrationController {
 
     @GetMapping("/registration")
     public String registration() {
-        log.info("registration page");
+        LOGGER.info("registration page");
         return "registration";
     }
 
@@ -32,10 +33,10 @@ public class RegistrationController {
                           @RequestParam String password) {
         User user = userService.getByUsername(username);
         if (user != null) {
-            log.info("user with username: {} already exists!", username);
+            LOGGER.info("user with username: {} already exists!", username);
             return "registration";
         }
-        log.info("create new user with username: {}", username);
+        LOGGER.info("create new user with username: {}", username);
         userService.save(username, email, password);
         return "redirect:/";
     }

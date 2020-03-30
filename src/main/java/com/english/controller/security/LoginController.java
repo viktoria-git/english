@@ -1,4 +1,4 @@
-package com.english.controller;
+package com.english.controller.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,11 +10,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class LoginController {
-    private Logger log = LoggerFactory.getLogger(LoginController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
     @RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
     public ModelAndView login() {
-        log.info("login page");
+        LOGGER.info("login page");
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("login");
         return modelAndView;

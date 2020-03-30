@@ -21,44 +21,23 @@
     </div>
     <div class="form-group mx-sm-3 mb-2">
         <label class="sr-only">Translate</label>
-        <label><input type="text" class="form-control" name="translate" placeholder="Translate"
-                      value="${param.translate}"></label>
-    </div>
-    <button type="submit" class="btn btn-danger" style="background: slategray;border: slategray">Add</button>
-</form>
-
-
-<div class="row" style="width: 100%">
-    <div class="col-2">
-    </div>
-    <div class="col-10">
-        <jsp:include page="./fragments/table.jsp"/>
+        <label><input type="text" class="form-control" name="translate" placeholder="Translate" value="${param.translate}"></label>
     </div>
     <jsp:include page="./fragments/selectTopic.jsp"/>
     <jsp:include page="./fragments/selectLevel.jsp"/>
     <button type="submit" class="btn btn-danger" style="background: slategray;border: slategray">Add</button>
 </form>
 
-
 <div class="row" style="width: 100%">
     <div class="col-2">
-        <p>Find word:</p>
-        <form class="form-inline" method="get" action="${pageContext.request.contextPath}/find">
-            <div class="form-group mx-sm-3 mb-2">
-                <label class="sr-only">Word</label>
-                <label><input type="text" class="form-control" name="searchedWord" placeholder="Word"></label>
-            </div>
-            <button type="submit" class="btn btn-success" id="button-type-submit-find">Find</button>
-        </form>
         <jsp:include page="./fragments/filter.jsp"/>
-
         <p>Reset filters:</p>
-        <form class="form-inline" method="get" action="${pageContext.request.contextPath}/">
+        <form class="form-inline" method="get" action="/vocabulary">
             <button type="submit" class="btn btn-success" id="button-type-submit-getAll">Reset</button>
         </form>
     </div>
 
-    <div  class="col-10">
+    <div class="col-10">
         <jsp:include page="./fragments/table.jsp"/>
     </div>
 </div>
