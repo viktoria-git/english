@@ -14,7 +14,7 @@ services:
   vault:
     image: vault:0.8.2
     ports:
-      - 8200:8200
+      - "8200:8200"
     cap_add:
       - IPC_LOCK
     environment:
@@ -29,6 +29,17 @@ services:
       VAULT_ADDR: http://vault:8200
     command: sh -c "env  && vault auth $$VAULT_DEV_ROOT_TOKEN_ID && vault write secret/english secret.login=root secret.password=root"
     links:
+      - vault
+
+  gateway:
+    image: gateway:latest
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mysql
+    links:
+      - mysql
+      - vault-seeded
       - vault
 
   service:
