@@ -18,71 +18,61 @@ public class WordService {
     private final WordDao wordDao;
     private final TopicService topicService;
     private final LevelService levelService;
-    private final UserService userService;
 
     @Autowired
-    public WordService(WordDao wordDao, TopicService topicService, LevelService levelService, UserService userService) {
+    public WordService(WordDao wordDao, TopicService topicService, LevelService levelService) {
         this.wordDao = wordDao;
         this.topicService = topicService;
         this.levelService = levelService;
-        this.userService = userService;
     }
 
-    public void create(String word, String translate, String topic, String level) {
-        int userId = userService.getUserId();
-        int topicId = topic.equals("0") ? 10 : topicService.get(topic).getId();
-        int levelId = level.equals("0") ? 1 : levelService.get(level).getId();
+    public void create(Integer userId, String word, String translate, String topic, String level) {
+        Integer topicId = topic.equals("0") ? 10 : topicService.get(topic).getId();
+        Integer levelId = level.equals("0") ? 1 : levelService.get(level).getId();
         if (wordDao.get(userId, word) == null) {
             wordDao.create(word, translate, userId, topicId, levelId);
         }
     }
 
-    public List<WordResponse> getAllWordResponses() {
-        int userId = userService.getUserId();
+    public List<WordResponse> getAllWordResponses(Integer userId) {
         return createWordResponseListFromWordList(wordDao.getAll(userId));
     }
 
-    public List<WordResponse> filter(String topic, String level) {
-        int userId = userService.getUserId();
-        int topicId = topic.equals("0") ? 0 : topicService.get(topic).getId();
-        int levelId = level.equals("0") ? 0 : levelService.get(level).getId();
+    public List<WordResponse> filter(Integer userId, String topic, String level) {
+        Integer topicId = topic.equals("0") ? 0 : topicService.get(topic).getId();
+        Integer levelId = level.equals("0") ? 0 : levelService.get(level).getId();
 
         List<Word> filteredWords = wordDao.filter(userId, topicId, levelId);
         return createWordResponseListFromWordList(filteredWords);
     }
 
-    public Word get(String word) {
-        int userId = userService.getUserId();
+    public Word get(Integer userId, String word) {
         return wordDao.get(userId, word);
     }
 
-    public void remove(Integer id) {
-        int userId = userService.getUserId();
+    public void remove(Integer userId, Integer id) {
         wordDao.remove(userId, id);
     }
 
-    public void removeAll() {
-        int userId = userService.getUserId();
+    public void removeAll(Integer userId) {
         wordDao.removeAll(userId);
     }
 
-    public List<WordResponse> sort(String sort) {
-        int userId = userService.getUserId();
+    public List<WordResponse> sort(Integer userId, String sort) {
         List<Word> sortedWords = wordDao.sort(userId, sort);
         return createWordResponseListFromWordList(sortedWords);
     }
 
-
-    public List<WordResponse> find(String searchedWord) {
-        int userId = userService.getUserId();
-        Word word = wordDao.get(userId, searchedWord);
+    public List<WordResponse> find(Integer userId, String searchedWord) {
+        Word word = get(userId, searchedWord);
         if (word != null) {
             WordResponse wordResponse = createWordResponseFromWord(word);
-            List<WordResponse> wordResponses = getAllWordResponses();
+            List<WordResponse> wordResponses = getAllWordResponses(userId);
             Collections.swap(wordResponses, 0, wordResponses.indexOf(wordResponse));
             wordResponses.get(0).setAllocated(true);
             return wordResponses;
-        } else return getAllWordResponses();
+
+        } else return getAllWordResponses(userId);
     }
 
     private WordResponse createWordResponseFromWord(Word word) {

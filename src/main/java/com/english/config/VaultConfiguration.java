@@ -2,8 +2,8 @@ package com.english.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties("example")
-public class VaultConfig {
+@ConfigurationProperties("secret")
+public class VaultConfiguration {
 
     private String login;
 

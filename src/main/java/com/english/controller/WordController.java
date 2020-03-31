@@ -1,8 +1,6 @@
 package com.english.controller;
 
 import com.english.entity.WordResponse;
-import com.english.service.LevelService;
-import com.english.service.TopicService;
 import com.english.service.WordService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,84 +16,68 @@ import java.util.*;
 @Validated
 public class WordController {
 
-    private static final String INDEX_PAGE = "index";
-    private static final String REDIRECT = "redirect:/vocabulary";
     private static final Logger LOGGER = LoggerFactory.getLogger(WordController.class);
-
     private final WordService wordService;
-    private final TopicService topicService;
-    private final LevelService levelService;
 
     @Autowired
-    public WordController(WordService service, TopicService topicService, LevelService levelService) {
+    public WordController(WordService service) {
         this.wordService = service;
-        this.topicService = topicService;
-        this.levelService = levelService;
     }
 
+    @ResponseBody
     @RequestMapping(path = "/vocabulary", method = RequestMethod.GET)
-    public String getAll(Map<String, Object> model) {
-        LOGGER.info("Get all words");
-        List<WordResponse> wordResponses = wordService.getAllWordResponses();
-        return updateListOfWordResponses(wordResponses, model);
+    public List<WordResponse> getAll(@RequestParam Integer userId) {
+        LOGGER.info("Get all words for user with id = {}", userId);
+        return wordService.getAllWordResponses(userId);
     }
 
+    @ResponseBody
     @RequestMapping(path = "/add", method = RequestMethod.POST)
-    public String add(@RequestParam @NotEmpty String word,
-                      @RequestParam @NotEmpty String translate,
-                      @RequestParam String topic,
-                      @RequestParam String level) {
-        LOGGER.info("Create word = {} with topic = {} and level = {}", word, topic, level);
-        wordService.create(word, translate, topic, level);
-        return REDIRECT;
+    public void add(@RequestParam Integer userId,
+                    @RequestParam @NotEmpty String word,
+                    @RequestParam @NotEmpty String translate,
+                    @RequestParam String topic, @RequestParam String level) {
+        LOGGER.info("Create word = {} with topic = {} and level = {} for user with id = {}", word, topic, level, userId);
+        wordService.create(userId, word, translate, topic, level);
     }
 
-    @RequestMapping(path = "/remove", method = RequestMethod.GET)
-    public String remove(@RequestParam Integer id) {
-        LOGGER.info("Remove word with id = {}", id);
-        wordService.remove(id);
-        return REDIRECT;
+    @ResponseBody
+    @RequestMapping(path = "/remove", method = RequestMethod.DELETE)
+    public void remove(@RequestParam Integer userId, @RequestParam Integer id) {
+        LOGGER.info("Remove word ith id = {} for user with id = {}", id, userId);
+        wordService.remove(userId, id);
     }
 
-    @RequestMapping(path = "/removeAll", method = RequestMethod.GET)
-    public String removeAll() {
-        LOGGER.info("Remove all words");
-        wordService.removeAll();
-        return REDIRECT;
+    @ResponseBody
+    @RequestMapping(path = "/removeAll", method = RequestMethod.DELETE)
+    public void removeAll(@RequestParam Integer userId) {
+        LOGGER.info("Remove all words for user with = {}", userId);
+        wordService.removeAll(userId);
     }
 
+    @ResponseBody
     @RequestMapping(path = "/sort", method = RequestMethod.GET)
-    public String sort(Map<String, Object> model, @RequestParam String sort) {
-        LOGGER.info("Get all sorted words");
-        List<WordResponse> wordResponses = wordService.sort(sort);
-        return updateListOfWordResponses(wordResponses, model);
+    public List<WordResponse> sort(@RequestParam Integer userId, @RequestParam String sort) {
+        LOGGER.info("Get all sorted words for user with id = {}", userId);
+        return wordService.sort(userId, sort);
     }
 
+    @ResponseBody
     @RequestMapping(path = "/filter", method = RequestMethod.GET)
-    public String filter(Map<String, Object> model,
-                         @RequestParam String topic,
-                         @RequestParam String level) {
-        LOGGER.info("Get all filtered words");
-        List<WordResponse> wordResponses = wordService.filter(topic, level);
-        return updateListOfWordResponses(wordResponses, model);
+    public List<WordResponse> filter(@RequestParam Integer userId, @RequestParam String topic, @RequestParam String level) {
+        LOGGER.info("Get all filtered words for user with id = {}", userId);
+        return wordService.filter(userId, topic, level);
     }
 
+    @ResponseBody
     @RequestMapping(path = "/find", method = RequestMethod.GET)
-    public String find(@RequestParam String word, Map<String, Object> model) {
-        List<WordResponse> wordResponses = wordService.find(word);
+    public List<WordResponse> find(@RequestParam Integer userId, @RequestParam String searchedWord) {
+        List<WordResponse> wordResponses = wordService.find(userId, searchedWord);
         if (wordResponses == null) {
-            LOGGER.info("Vocabulary doesn`t exists word = {}", word);
-            return getAll(model);
+            LOGGER.info("Vocabulary doesn`t exists word = {}", searchedWord);
+            return getAll(userId);
         }
-        LOGGER.info("Get word {}", word);
-        return updateListOfWordResponses(wordResponses, model);
-    }
-
-    //generic Controller action
-    private String updateListOfWordResponses(List<WordResponse> words, Map<String, Object> model) {
-        model.put("topics", topicService.getAll());
-        model.put("levels", levelService.getAll());
-        model.put("words", words);
-        return INDEX_PAGE;
+        LOGGER.info("Get word {} for user with id = {}", searchedWord, userId);
+        return wordResponses;
     }
 }
