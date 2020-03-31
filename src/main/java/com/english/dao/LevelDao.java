@@ -7,7 +7,7 @@ import java.util.List;
 public interface LevelDao {
     List<Level> getAll();
 
-    Level getById(Integer id);
+    Level get(String level);
 
-    Level getByName(String level);
+    Level get(Integer id);
 }

@@ -6,20 +6,17 @@ import java.util.List;
 
 public interface WordDao {
 
-    void create(String word, String translate, Integer topicId, Integer levelId);
+    void create(String word, String translate, Integer userId, Integer topicId, Integer levelId);
 
-    List<Word> getAll();
+    List<Word> getAll(Integer userId);
 
-    Word get(String word);
+    Word get(Integer userId, String word);
 
-    Word getById(Integer id);
+    void remove(Integer userId, Integer id);
 
-    void remove(Integer id);
+    void removeAll(Integer userId);
 
-    void removeAll();
+    List<Word> filter(Integer userId, Integer topicId, Integer levelId);
 
-    List<Word> filter(Integer topicId, Integer levelId);
-
-    List<Word> sort(String sort);
-
+    List<Word> sort(Integer userId, String sort);
 }

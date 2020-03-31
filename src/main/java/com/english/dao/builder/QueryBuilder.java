@@ -24,13 +24,9 @@ public class QueryBuilder {
         }
 
         public Builder and() {
-            if (!newQueryBuilder.sql.contains("WHERE")) {
-                return where();
-            }
             newQueryBuilder.sql += " AND ";
             return this;
         }
-
 
         public void addParameter(Object parameter) {
             newQueryBuilder.parameters.add(parameter);

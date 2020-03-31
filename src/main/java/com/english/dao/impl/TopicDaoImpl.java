@@ -25,15 +25,14 @@ public class TopicDaoImpl implements TopicDao {
         return jdbcTemplate.query(sql, new TopicMapper());
     }
 
-    public Topic getById(Integer id) {
-        String sql = "SELECT * FROM topic WHERE ID = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{id}, new TopicMapper());
+    public Topic get(String topic) {
+        String sql = "SELECT * FROM topic WHERE topic_name = ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{topic}, new TopicMapper());
     }
 
     @Override
-    public Topic getByName(String topic){
-
-        String sql = "SELECT * FROM topic WHERE topic_name = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{topic}, new TopicMapper());
+    public Topic get(Integer id) {
+        String sql = "SELECT * FROM topic WHERE id = ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{id}, new TopicMapper());
     }
 }

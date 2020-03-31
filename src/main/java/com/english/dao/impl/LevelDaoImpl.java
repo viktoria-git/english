@@ -24,14 +24,14 @@ public class LevelDaoImpl implements LevelDao {
         return jdbcTemplate.query(sql, new LevelMapper());
     }
 
-    public Level getById(Integer id) {
-        String sql = "SELECT * FROM level WHERE ID = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{id}, new LevelMapper());
-    }
-
-    public Level getByName(String level){
+    public Level get(String level) {
         String sql = "SELECT * FROM level WHERE level_name = ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{level}, new LevelMapper());
     }
 
+    @Override
+    public Level get(Integer id) {
+        String sql = "SELECT * FROM level WHERE id = ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{id}, new LevelMapper());
+    }
 }

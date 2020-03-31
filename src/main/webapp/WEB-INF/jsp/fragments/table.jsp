@@ -47,7 +47,7 @@
             <td>${word.topic}</td>
             <td>${word.level}</td>
             <td>
-                <form class="table-form" method="get" action="${pageContext.request.contextPath}/remove">
+                <form class="table-form" method="get" action="/remove">
                     <input type="hidden" name="id" value="${word.id}"/>
                     <button type="submit" style="background: transparent;border: none;">
                         <i class="icon-remove"></i></button>
