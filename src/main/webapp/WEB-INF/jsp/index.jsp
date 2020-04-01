@@ -12,28 +12,14 @@
 <body>
 
 <jsp:include page="./fragments/menu.jsp"/>
-<p style="width: 95%">Create a new word:</p>
-<form class="form-inline" style="width: 95%" method="post" action="/add">
-    <br>
-    <div class="form-group mx-sm-3 mb-2">
-        <label class="sr-only">Word</label>
-        <label><input type="text" class="form-control" name="word" placeholder="Word" value="${param.word}"></label>
-    </div>
-    <div class="form-group mx-sm-3 mb-2">
-        <label class="sr-only">Translate</label>
-        <label><input type="text" class="form-control" name="translate" placeholder="Translate" value="${param.translate}"></label>
-    </div>
-    <jsp:include page="./fragments/selectTopic.jsp"/>
-    <jsp:include page="./fragments/selectLevel.jsp"/>
-    <button type="submit" class="btn btn-danger" style="background: slategray;border: slategray">Add</button>
-</form>
-
-<div class="row" style="width: 100%">
+<br>
+<div class="row" style="background-color: #f8f9fa;width: 100%">
     <div class="col-2">
+        <jsp:include page="./fragments/create.jsp"/>
         <jsp:include page="./fragments/filter.jsp"/>
         <p>Reset filters:</p>
         <form class="form-inline" method="get" action="/vocabulary">
-            <button type="submit" class="btn btn-success" id="button-type-submit-getAll">Reset</button>
+            <button type="submit" class="btn btn-dark"  style="position: relative;left: 15px;" >Reset</button>
         </form>
     </div>
 
@@ -41,7 +27,6 @@
         <jsp:include page="./fragments/table.jsp"/>
     </div>
 </div>
-
 </body>
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"

@@ -43,8 +43,6 @@ public class UserDaoImpl implements UserDao {
 
     public Integer getUserId(String username) {
         User user = getByUsername(username);
-        if (user != null) {
-            return user.getId();
-        } else return -1;
+        return user != null ? user.getId() : null;
     }
 }

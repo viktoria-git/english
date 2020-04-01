@@ -6,32 +6,33 @@
     <thead class="thead-dark">
     <tr class="table-success">
         <th>Word
-            <form method="get" style="margin: 0;" action="${pageContext.request.contextPath}/sort">
+            <form method="get" style="margin: 5px;" action="/sort">
                 <input type="hidden" name="sort" value="word">
                 <jsp:include page="./buttonWithIconSort.jsp"/>
             </form>
         </th>
         <th>Translate
-            <form method="get" style="margin: 0;" action="${pageContext.request.contextPath}/sort">
+            <form style="margin: 0"><small class="text-muted">noun/verb</small></form>
+            <form method="get" style="margin: 0;" action="/sort">
                 <input type="hidden" name="sort" value="translate">
                 <jsp:include page="./buttonWithIconSort.jsp"/>
             </form>
         </th>
         <th>Topic
-            <form method="get" style="margin: 0;" action="${pageContext.request.contextPath}/sort">
+            <form method="get" style="margin: 5px;" action="/sort">
                 <input type="hidden" name="sort" value="topic_id">
                 <jsp:include page="./buttonWithIconSort.jsp"/>
             </form>
         </th>
         <th>
             Level
-            <form method="get" style="margin: 0;" action="${pageContext.request.contextPath}/sort">
+            <form method="get" style="margin: 5px;" action="/sort">
                 <input type="hidden" name="sort" value="level_id">
                 <jsp:include page="./buttonWithIconSort.jsp"/>
             </form>
         </th>
         <th>Delete
-            <form method="get" style="margin: 0;" action="${pageContext.request.contextPath}/removeAll">
+            <form method="get" style="margin: 5px;" action="/removeAll">
                 <button type="submit" class="button-icon-style">
                     <i class="icon-remove-sign"></i>
                 </button>

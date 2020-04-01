@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class RegistrationController {
     private static final Logger LOGGER = LoggerFactory.getLogger(WordController.class);
+    private static final String REGISTRATION = "registration";
 
     private final UserService userService;
 
@@ -24,7 +25,7 @@ public class RegistrationController {
     @GetMapping("/registration")
     public String registration() {
         LOGGER.info("registration page");
-        return "registration";
+        return REGISTRATION;
     }
 
     @RequestMapping(path = "/registration", method = RequestMethod.POST)
@@ -33,10 +34,10 @@ public class RegistrationController {
                           @RequestParam String password) {
         User user = userService.getByUsername(username);
         if (user != null) {
-            LOGGER.info("user with username: {} already exists!", username);
-            return "registration";
+            LOGGER.info("User with username: {} already exists!", username);
+            return REGISTRATION;
         }
-        LOGGER.info("create new user with username: {}", username);
+        LOGGER.info("Create a new user with username: {}", username);
         userService.save(username, email, password);
         return "redirect:/";
     }

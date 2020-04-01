@@ -4,7 +4,13 @@
 
 <p>Filter:</p>
 <form class="form-inline" method="get" action="${pageContext.request.contextPath}/filter">
-    <jsp:include page="./selectTopic.jsp"/>
-    <jsp:include page="./selectLevel.jsp"/>
-    <button type="submit" class="btn btn-success" id="button-type-submit-filterLevel">Filter</button>
+
+    <div class="form-group mx-sm-3 mb-2" style="position: relative;left:-10px;">
+        <jsp:include page="./selectTopic.jsp"/>
+    </div>
+
+    <div class="form-group mx-sm-3 mb-2" style="position: relative;left:-10px;">
+        <jsp:include page="./selectLevel.jsp"/>
+    </div>
+    <button type="submit" class="btn btn-dark" style="position: relative;left: 15px;">Filter</button>
 </form>

@@ -28,6 +28,11 @@ public class QueryBuilder {
             return this;
         }
 
+        public Builder orderBy() {
+            newQueryBuilder.sql += " order by ";
+            return this;
+        }
+
         public void addParameter(Object parameter) {
             newQueryBuilder.parameters.add(parameter);
         }

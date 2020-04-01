@@ -37,7 +37,11 @@ public class WordDaoImpl implements WordDao {
     @Override
     public Word get(Integer userId, String word) {
         String sql = "SELECT * FROM word WHERE user_id = ? and word = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{userId, word}, new WordMapper());
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{userId, word}, new WordMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override
@@ -70,8 +74,24 @@ public class WordDaoImpl implements WordDao {
 
 
     @Override
-    public List<Word> sort(Integer userId, String sort) {
-        String sql = "SELECT * FROM word where user_id = ? order by " + sort;
-        return jdbcTemplate.query(sql, new Object[]{userId}, new WordMapper());
+    public List<Word> sort(Integer userId, String sort, Integer topicId, Integer levelId) {
+        String sql = "SELECT * FROM word where user_id = ?";
+        QueryBuilder.Builder builder = new QueryBuilder.Builder().addSql(sql);
+        builder.addParameter(userId);
+        if (levelId != 0) {
+            builder.and()
+                    .addSql("level_id=?")
+                    .addParameter(levelId);
+        }
+        if (topicId != 0) {
+            builder.and()
+                    .addSql("topic_id=?")
+                    .addParameter(topicId);
+        }
+        builder.orderBy();
+        builder.addSql(sort);
+        QueryBuilder query = builder.build();
+        return jdbcTemplate.query(query.getSql(), query.getParameters(), new WordMapper());
     }
+
 }

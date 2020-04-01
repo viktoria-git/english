@@ -18,5 +18,5 @@ public interface WordDao {
 
     List<Word> filter(Integer userId, Integer topicId, Integer levelId);
 
-    List<Word> sort(Integer userId, String sort);
+    List<Word> sort(Integer userId, String sort, Integer topicId, Integer levelId);
 }

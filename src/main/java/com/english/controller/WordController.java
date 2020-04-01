@@ -17,11 +17,9 @@ import java.util.*;
 @Controller
 @Validated
 public class WordController {
-
     private static final String INDEX_PAGE = "index";
     private static final String REDIRECT = "redirect:/vocabulary";
     private static final Logger LOGGER = LoggerFactory.getLogger(WordController.class);
-
     private final WordService wordService;
     private final TopicService topicService;
     private final LevelService levelService;
@@ -42,11 +40,10 @@ public class WordController {
 
     @RequestMapping(path = "/add", method = RequestMethod.POST)
     public String add(@RequestParam @NotEmpty String word,
-                      @RequestParam @NotEmpty String translate,
                       @RequestParam String topic,
                       @RequestParam String level) {
-        LOGGER.info("Create word = {} with topic = {} and level = {}", word, topic, level);
-        wordService.create(word, translate, topic, level);
+        LOGGER.info("Create word = {} with topic = {} and levelId = {}", word, topic, level);
+        wordService.create(word, topic, level);
         return REDIRECT;
     }
 
@@ -65,7 +62,8 @@ public class WordController {
     }
 
     @RequestMapping(path = "/sort", method = RequestMethod.GET)
-    public String sort(Map<String, Object> model, @RequestParam String sort) {
+    public String sort(Map<String, Object> model,
+                       @RequestParam String sort) {
         LOGGER.info("Get all sorted words");
         List<WordResponse> wordResponses = wordService.sort(sort);
         return updateListOfWordResponses(wordResponses, model);
@@ -81,13 +79,13 @@ public class WordController {
     }
 
     @RequestMapping(path = "/find", method = RequestMethod.GET)
-    public String find(@RequestParam String word, Map<String, Object> model) {
-        List<WordResponse> wordResponses = wordService.find(word);
+    public String find(@RequestParam String searchedWord, Map<String, Object> model) {
+        List<WordResponse> wordResponses = wordService.find(searchedWord);
         if (wordResponses == null) {
-            LOGGER.info("Vocabulary doesn`t exists word = {}", word);
+            LOGGER.info("Vocabulary doesn`t exists word = {}", searchedWord);
             return getAll(model);
         }
-        LOGGER.info("Get word {}", word);
+        LOGGER.info("Get word = {}", searchedWord);
         return updateListOfWordResponses(wordResponses, model);
     }
 
