@@ -18,11 +18,11 @@ public class DataSourceConfiguration {
     @Bean
     public DataSource getDataSource() {
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
-        dataSourceBuilder.url("jdbc:mysql://mysql:3306/english?characterEncoding=UTF-8");
+        dataSourceBuilder.url("jdbc:mysql://localhost:3306/english?characterEncoding=UTF-8&serverTimezone=UTC");
         System.out.println(configuration.getLogin());
         System.out.println(configuration.getPassword());
-        dataSourceBuilder.username(configuration.getLogin());
-        dataSourceBuilder.password(configuration.getPassword());
+        dataSourceBuilder.username("root");
+        dataSourceBuilder.password("root");
         return dataSourceBuilder.build();
     }
 }
