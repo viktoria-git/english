@@ -1,7 +1,6 @@
 package com.english.entity;
 
 import java.util.Objects;
-
 public class Level {
     private Integer id;
     private String levelName;
@@ -34,5 +33,13 @@ public class Level {
     @Override
     public int hashCode() {
         return Objects.hash(id, levelName);
+    }
+
+    @Override
+    public String toString() {
+        return "Level{" +
+                "id=" + id +
+                ", levelName='" + levelName + '\'' +
+                '}';
     }
 }
