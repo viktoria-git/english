@@ -15,6 +15,9 @@ import java.util.stream.Collectors;
 @Service
 public class WordService {
 
+    private static final Integer DEFAULT_LEVEL = 1;
+    private static final Integer DEFAULT_TOPIC = 10;
+
     private final WordDao wordDao;
     private final TopicService topicService;
     private final LevelService levelService;
@@ -27,8 +30,8 @@ public class WordService {
     }
 
     public void create(Integer userId, String word, String translate, String topic, String level) {
-        Integer topicId = topic.equals("0") ? 10 : topicService.get(topic).getId();
-        Integer levelId = level.equals("0") ? 1 : levelService.get(level).getId();
+        Integer topicId = topic.equals("0") ? DEFAULT_TOPIC : topicService.get(topic).getId();
+        Integer levelId = level.equals("0") ? DEFAULT_LEVEL : levelService.get(level).getId();
         if (wordDao.get(userId, word) == null) {
             wordDao.create(word, translate, userId, topicId, levelId);
         }
