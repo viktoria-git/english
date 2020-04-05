@@ -1,6 +1,6 @@
 package com.english.service;
 
-import com.english.controller.UploadController;
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 @Service
 public class FileService {
     private static final String UPLOADED_FOLDER = "/home/viktoria/projects/english/src/main/resources/";
-    private static final Logger LOGGER = LoggerFactory.getLogger(UploadController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileService.class);
 
     private final WordService wordService;
 
@@ -29,16 +29,21 @@ public class FileService {
     }
 
     public void uploadFile(MultipartFile file) {
-        String filename = file.getOriginalFilename();
-        try {
-            byte[] bytes = file.getBytes();
-            Path path = Paths.get(UPLOADED_FOLDER + filename);
-            Files.write(path, bytes);
-            LOGGER.info("File: {} uploaded successfully", filename);
+        if (Objects.requireNonNull(FilenameUtils.getExtension(file.getOriginalFilename())).equals("cvs")) {
+            String filename = file.getOriginalFilename();
+            try {
+                byte[] bytes = file.getBytes();
+                Path path = Paths.get(UPLOADED_FOLDER + filename);
+                Files.write(path, bytes);
+                LOGGER.info("File: {} uploaded successfully", filename);
 
-            fillFromFile(filename);
-        } catch (IOException e) {
-            LOGGER.info("Could not upload file: {}", file);
+                fillFromFile(filename);
+            } catch (IOException e) {
+                LOGGER.info("Could not upload file: {}", file);
+            }
+        } else {
+            LOGGER.info("Wrong file: {} format!", file);
+            throw new RuntimeException("Wrong file format!");
         }
     }
 

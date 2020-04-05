@@ -16,6 +16,9 @@ import java.util.stream.Collectors;
 @Service
 public class WordService {
 
+    private static final Integer DEFAULT_LEVEL = 1;
+    private static final Integer DEFAULT_TOPIC = 10;
+
     private static final String URL = "http://localhost:3000/translate/";
     private final RestTemplate template = new RestTemplate();
 
@@ -38,8 +41,8 @@ public class WordService {
     public void create(String word, String topic, String level) {
         Integer userId = userService.getUserId();
         if (get(word) == null) {
-            Integer topicId = topic.equals("0") ? 10 : topicService.getId(topic);
-            Integer levelId = level.equals("0") ? 1 : levelService.getId(level);
+            Integer topicId = topic.equals("0") ? DEFAULT_TOPIC : topicService.getId(topic);
+            Integer levelId = level.equals("0") ? DEFAULT_LEVEL : levelService.getId(level);
             String translate = template.getForObject(URL + word, String.class);
             wordDao.create(word, translate, userId, topicId, levelId);
         }
@@ -48,8 +51,8 @@ public class WordService {
     public void create(String word, String translate, String topic, String level) {
         Integer userId = userService.getUserId();
         if (get(word) == null) {
-            Integer topicId = topic.equals("0") ? 10 : topicService.getId(topic);
-            Integer levelId = level.equals("0") ? 1 : levelService.getId(level);
+            Integer topicId = topic.equals("0") ? DEFAULT_TOPIC : topicService.getId(topic);
+            Integer levelId = level.equals("0") ? DEFAULT_LEVEL : levelService.getId(level);
             wordDao.create(word, translate, userId, topicId, levelId);
         }
     }
