@@ -12,5 +12,5 @@ spring:
 
 vault:
   uri: "http://vault:8200"
-  tocken: f47316bd-4335-d1c9-5cc7-f353e5acba4b
+  token: f47316bd-4335-d1c9-5cc7-f353e5acba4b
   datasource: secret/english
