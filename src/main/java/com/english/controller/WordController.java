@@ -31,14 +31,14 @@ public class WordController {
         this.levelService = levelService;
     }
 
-    @RequestMapping(path = "/vocabulary", method = RequestMethod.GET)
+    @GetMapping(path = "/vocabulary")
     public String getAll(Map<String, Object> model) {
         LOGGER.info("Get all words");
         List<WordResponse> wordResponses = wordService.getAllWordResponses();
         return updateListOfWordResponses(wordResponses, model);
     }
 
-    @RequestMapping(path = "/add", method = RequestMethod.POST)
+    @PostMapping(path = "/add")
     public String add(@RequestParam @NotEmpty String word,
                       @RequestParam String topic,
                       @RequestParam String level) {
@@ -47,21 +47,21 @@ public class WordController {
         return REDIRECT;
     }
 
-    @RequestMapping(path = "/remove", method = RequestMethod.GET)
+    @GetMapping(path = "/remove")
     public String remove(@RequestParam Integer id) {
         LOGGER.info("Remove word with id = {}", id);
         wordService.remove(id);
         return REDIRECT;
     }
 
-    @RequestMapping(path = "/removeAll", method = RequestMethod.GET)
+    @GetMapping(path = "/removeAll")
     public String removeAll() {
         LOGGER.info("Remove all words");
         wordService.removeAll();
         return REDIRECT;
     }
 
-    @RequestMapping(path = "/sort", method = RequestMethod.GET)
+    @GetMapping(path = "/sort")
     public String sort(Map<String, Object> model,
                        @RequestParam String sort) {
         LOGGER.info("Get all sorted words");
@@ -69,7 +69,7 @@ public class WordController {
         return updateListOfWordResponses(wordResponses, model);
     }
 
-    @RequestMapping(path = "/filter", method = RequestMethod.GET)
+    @GetMapping(path = "/filter")
     public String filter(Map<String, Object> model,
                          @RequestParam String topic,
                          @RequestParam String level) {
@@ -78,7 +78,7 @@ public class WordController {
         return updateListOfWordResponses(wordResponses, model);
     }
 
-    @RequestMapping(path = "/find", method = RequestMethod.GET)
+    @GetMapping(path = "/find")
     public String find(@RequestParam String searchedWord, Map<String, Object> model) {
         List<WordResponse> wordResponses = wordService.find(searchedWord);
         if (wordResponses == null) {
