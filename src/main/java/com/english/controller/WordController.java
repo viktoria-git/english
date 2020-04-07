@@ -81,13 +81,13 @@ public class WordController {
     }
 
     @RequestMapping(path = "/find", method = RequestMethod.GET)
-    public String find(@RequestParam String word, Map<String, Object> model) {
-        List<WordResponse> wordResponses = wordService.find(word);
+    public String find(@RequestParam String searchedWord, Map<String, Object> model) {
+        List<WordResponse> wordResponses = wordService.find(searchedWord);
         if (wordResponses == null) {
-            LOGGER.info("Vocabulary doesn`t exists word = {}", word);
+            LOGGER.info("Vocabulary doesn`t exists searchedWord = {}", searchedWord);
             return getAll(model);
         }
-        LOGGER.info("Get word {}", word);
+        LOGGER.info("Get searchedWord {}", searchedWord);
         return updateListOfWordResponses(wordResponses, model);
     }
 

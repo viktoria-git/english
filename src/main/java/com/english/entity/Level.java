@@ -34,12 +34,4 @@ public class Level {
     public int hashCode() {
         return Objects.hash(id, levelName);
     }
-
-    @Override
-    public String toString() {
-        return "Level{" +
-                "id=" + id +
-                ", levelName='" + levelName + '\'' +
-                '}';
-    }
 }

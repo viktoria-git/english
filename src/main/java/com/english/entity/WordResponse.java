@@ -95,17 +95,4 @@ public class WordResponse {
     public int hashCode() {
         return Objects.hash(id, word, translate, color, allocated, topic, level);
     }
-
-    @Override
-    public String toString() {
-        return "WordResponse{" +
-                "id=" + id +
-                ", word='" + word + '\'' +
-                ", translate='" + translate + '\'' +
-                ", color='" + color + '\'' +
-                ", allocated=" + allocated +
-                ", topic='" + topic + '\'' +
-                ", level='" + level + '\'' +
-                '}';
-    }
 }
