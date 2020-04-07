@@ -45,9 +45,9 @@ public class WordService {
 
 
     public void create(Integer userId, String word, String topic, String level) {
-        if (get(word) == null) {
-            Integer topicId = topic.equals("0") ? DEFAULT_TOPIC : topicService.getId(topic);
-            Integer levelId = level.equals("0") ? DEFAULT_LEVEL : levelService.getId(level);
+        if (get(userId, word) == null) {
+            Integer topicId = topic.equals("0") ? DEFAULT_TOPIC : topicService.get(topic).getId();
+            Integer levelId = level.equals("0") ? DEFAULT_LEVEL : levelService.get(level).getId();
             String translate = template.getForObject(URL + word, String.class);
             wordDao.create(word, translate, userId, topicId, levelId);
         }
@@ -80,7 +80,9 @@ public class WordService {
     }
 
     public List<WordResponse> sort(Integer userId, String sort) {
-        List<Word> sortedWords = wordDao.sort(userId, sort);
+        Integer topicId = topic.equals("0") ? 0 : topicService.get(topic).getId();
+        Integer levelId = level.equals("0") ? 0 : levelService.get(level).getId();
+        List<Word> sortedWords = wordDao.sort(userId, sort, topicId, levelId);
         return createWordResponseListFromWordList(sortedWords);
     }
 

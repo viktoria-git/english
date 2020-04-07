@@ -21,9 +21,12 @@ public class TopicService {
         return topicDao.getAll();
     }
 
-    public Integer getId(String topic) { return topicDao.get(topic).getId(); }
+    public Topic get(String topic) {
+        return topicDao.get(topic);
+    }
 
     public Topic get(Integer id) {
         return topicDao.get(id);
     }
+
 }
