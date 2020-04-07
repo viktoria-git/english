@@ -18,28 +18,29 @@ public class LevelServiceTest {
     private LevelService levelService;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.levelDao = Mockito.mock(LevelDao.class);
         this.levelService = new LevelService(levelDao);
     }
+
     @Test
     public void getAll() {
         when(levelDao.getAll()).thenReturn(levelList);
         List<Level> actualList = levelService.getAll();
-        Assert.assertEquals(levelList,actualList);
+        Assert.assertEquals(levelList, actualList);
     }
 
     @Test
     public void getByName() {
         when(levelDao.get("Elementary")).thenReturn(LEVEL);
         Level actualResult = levelService.get("Elementary");
-        Assert.assertEquals(LEVEL,actualResult);
+        Assert.assertEquals(LEVEL, actualResult);
     }
 
     @Test
     public void getById() {
         when(levelDao.get(1)).thenReturn(LEVEL);
         Level actualResult = levelService.get(1);
-        Assert.assertEquals(LEVEL,actualResult);
+        Assert.assertEquals(LEVEL, actualResult);
     }
 }

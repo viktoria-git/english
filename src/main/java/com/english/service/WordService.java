@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-.
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,7 +42,6 @@ public class WordService {
             wordDao.create(word, translate, userId, topicId, levelId);
         }
     }
-
 
     public void create(Integer userId, String word, String topic, String level) {
         if (get(userId, word) == null) {

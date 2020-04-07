@@ -19,7 +19,7 @@ public class TopicServiceTest {
     private TopicService topicService;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.topicDao = Mockito.mock(TopicDao.class);
         this.topicService = new TopicService(topicDao);
     }

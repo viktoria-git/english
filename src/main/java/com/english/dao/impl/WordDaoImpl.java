@@ -81,7 +81,5 @@ public class WordDaoImpl implements WordDao {
                     .addParameter(topicId);
         }
         return builder;
-        QueryBuilder query = builder.build();
-        return jdbcTemplate.query(query.getSql(), query.getParameters(), new WordMapper());
     }
 }

@@ -11,6 +11,9 @@ public class WordResponse {
     private String topic;
     private String level;
 
+    public WordResponse() {
+    }
+
     public WordResponse(Word word, Topic topic, Level level) {
         this.id = word.getId();
         this.word = word.getWord();

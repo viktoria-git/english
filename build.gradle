@@ -45,7 +45,3 @@ dependencies {
     compile 'org.springframework.vault:spring-vault-core:2.1.1.RELEASE'
 
 }
-
-test {
-    useJUnitPlatform()
-}
