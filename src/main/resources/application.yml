@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: "jdbc:mysql://localhost:3306/english?characterEncoding=UTF-8&serverTimezone=UTC"
+    username: "root"
+    password: "root"
+    driver-class-name: com.mysql.jdbc.Driver
+  mvc:
+    view:
+      suffix: .jsp
+      prefix: /WEB-INF/jsp/
+
+vault:
+  uri: "http://vault:8200"
+  token: f47316bd-4335-d1c9-5cc7-f353e5acba4b
+  datasource: secret/english

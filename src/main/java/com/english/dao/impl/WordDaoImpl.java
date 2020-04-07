@@ -23,7 +23,6 @@ public class WordDaoImpl implements WordDao {
 
     @Override
     public void create(String word, String translate, Integer userId, Integer topicId, Integer levelId) {
-
         String sql = "INSERT INTO word(word,translate,user_id,topic_id,level_id) VALUES(?,?,?,?,?)";
         jdbcTemplate.update(sql, word, translate, userId, topicId, levelId);
     }
