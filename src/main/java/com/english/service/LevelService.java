@@ -21,11 +21,12 @@ public class LevelService {
         return levelDao.getAll();
     }
 
-    public Level get(String level) {
-        return levelDao.get(level);
+    public Level get(String topic) {
+        return levelDao.get(topic);
     }
 
     public Level get(Integer id) {
         return levelDao.get(id);
     }
+
 }

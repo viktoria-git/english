@@ -55,6 +55,19 @@ public class WordDaoImpl implements WordDao {
     }
 
     public List<Word> filter(Integer userId, Integer topicId, Integer levelId) {
+        QueryBuilder query = filterSql(userId, topicId, levelId).build();
+        return jdbcTemplate.query(query.getSql(), query.getParameters(), new WordMapper());
+    }
+
+    @Override
+    public List<Word> sort(Integer userId, String sort, Integer topicId, Integer levelId) {
+        QueryBuilder.Builder builder = filterSql(userId, topicId, levelId);
+        builder.orderBy(sort);
+        QueryBuilder query = builder.build();
+        return jdbcTemplate.query(query.getSql(), query.getParameters(), new WordMapper());
+    }
+
+    private QueryBuilder.Builder filterSql(Integer userId, Integer topicId, Integer levelId) {
         QueryBuilder.Builder builder = new QueryBuilder.Builder().addSql("SELECT * FROM word WHERE user_id = ?");
         builder.addParameter(userId);
         if (levelId != 0) {
@@ -67,14 +80,6 @@ public class WordDaoImpl implements WordDao {
                     .addSql("topic_id=?")
                     .addParameter(topicId);
         }
-        QueryBuilder query = builder.build();
-        return jdbcTemplate.query(query.getSql(), query.getParameters(), new WordMapper());
-    }
-
-
-    @Override
-    public List<Word> sort(Integer userId, String sort) {
-        String sql = "SELECT * FROM word where user_id = ? order by " + sort;
-        return jdbcTemplate.query(sql, new Object[]{userId}, new WordMapper());
+        return builder;
     }
 }

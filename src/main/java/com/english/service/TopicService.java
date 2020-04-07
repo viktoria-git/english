@@ -28,4 +28,5 @@ public class TopicService {
     public Topic get(Integer id) {
         return topicDao.get(id);
     }
+
 }

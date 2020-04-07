@@ -7,6 +7,7 @@ import com.english.dao.WordDao;
 import com.english.entity.WordResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 import java.util.List;
@@ -14,6 +15,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class WordService {
+    private static final String URL = "http://localhost:3000/translate/";
+    private final RestTemplate template = new RestTemplate();
 
     private static final Integer DEFAULT_LEVEL = 1;
     private static final Integer DEFAULT_TOPIC = 10;
@@ -21,6 +24,9 @@ public class WordService {
     private final WordDao wordDao;
     private final TopicService topicService;
     private final LevelService levelService;
+
+    private String level = "0";
+    private String topic = "0";
 
     @Autowired
     public WordService(WordDao wordDao, TopicService topicService, LevelService levelService) {
@@ -37,7 +43,19 @@ public class WordService {
         }
     }
 
+
+    public void create(Integer userId, String word, String topic, String level) {
+        if (get(userId, word) == null) {
+            Integer topicId = topic.equals("0") ? DEFAULT_TOPIC : topicService.get(topic).getId();
+            Integer levelId = level.equals("0") ? DEFAULT_LEVEL : levelService.get(level).getId();
+            String translate = template.getForObject(URL + word, String.class);
+            wordDao.create(word, translate, userId, topicId, levelId);
+        }
+    }
+
     public List<WordResponse> getAllWordResponses(Integer userId) {
+        this.level = "0";
+        this.topic = "0";
         return createWordResponseListFromWordList(wordDao.getAll(userId));
     }
 
@@ -62,7 +80,9 @@ public class WordService {
     }
 
     public List<WordResponse> sort(Integer userId, String sort) {
-        List<Word> sortedWords = wordDao.sort(userId, sort);
+        Integer topicId = topic.equals("0") ? 0 : topicService.get(topic).getId();
+        Integer levelId = level.equals("0") ? 0 : levelService.get(level).getId();
+        List<Word> sortedWords = wordDao.sort(userId, sort, topicId, levelId);
         return createWordResponseListFromWordList(sortedWords);
     }
 
