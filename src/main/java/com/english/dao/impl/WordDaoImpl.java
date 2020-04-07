@@ -23,7 +23,6 @@ public class WordDaoImpl implements WordDao {
 
     @Override
     public void create(String word, String translate, Integer userId, Integer topicId, Integer levelId) {
-
         String sql = "INSERT INTO word(word,translate,user_id,topic_id,level_id) VALUES(?,?,?,?,?)";
         jdbcTemplate.update(sql, word, translate, userId, topicId, levelId);
     }
@@ -37,7 +36,11 @@ public class WordDaoImpl implements WordDao {
     @Override
     public Word get(Integer userId, String word) {
         String sql = "SELECT * FROM word WHERE user_id = ? and word = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{userId, word}, new WordMapper());
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{userId, word}, new WordMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override
@@ -52,6 +55,19 @@ public class WordDaoImpl implements WordDao {
     }
 
     public List<Word> filter(Integer userId, Integer topicId, Integer levelId) {
+        QueryBuilder query = filterSql(userId, topicId, levelId).build();
+        return jdbcTemplate.query(query.getSql(), query.getParameters(), new WordMapper());
+    }
+
+    @Override
+    public List<Word> order(Integer userId, String sort, Integer topicId, Integer levelId) {
+        QueryBuilder.Builder builder = filterSql(userId, topicId, levelId);
+        builder.orderBy(sort);
+        QueryBuilder query = builder.build();
+        return jdbcTemplate.query(query.getSql(), query.getParameters(), new WordMapper());
+    }
+
+    private QueryBuilder.Builder filterSql(Integer userId, Integer topicId, Integer levelId) {
         QueryBuilder.Builder builder = new QueryBuilder.Builder().addSql("SELECT * FROM word WHERE user_id = ?");
         builder.addParameter(userId);
         if (levelId != 0) {
@@ -64,14 +80,8 @@ public class WordDaoImpl implements WordDao {
                     .addSql("topic_id=?")
                     .addParameter(topicId);
         }
+        return builder;
         QueryBuilder query = builder.build();
         return jdbcTemplate.query(query.getSql(), query.getParameters(), new WordMapper());
-    }
-
-
-    @Override
-    public List<Word> order(Integer userId, String sort) {
-        String sql = "SELECT * FROM word where user_id = ? order by " + sort;
-        return jdbcTemplate.query(sql, new Object[]{userId}, new WordMapper());
     }
 }

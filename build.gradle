@@ -15,8 +15,6 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.security:spring-security-test'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
@@ -34,6 +32,7 @@ dependencies {
     compile 'ch.qos.logback.contrib:logback-jackson:0.1.5'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.9.5'
     compile 'org.codehaus.janino:janino:3.0.8'
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
     testCompile 'ch.qos.logback:logback-classic:1.2.3'
     testCompile 'ch.qos.logback.contrib:logback-json-classic:0.1.5'
     testCompile 'ch.qos.logback.contrib:logback-jackson:0.1.5'
@@ -42,6 +41,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     testImplementation 'org.mockito:mockito-core:2.7.22'
+
+    compile 'org.springframework.vault:spring-vault-core:2.1.1.RELEASE'
 
 }
 

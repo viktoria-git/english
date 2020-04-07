@@ -1,0 +1,54 @@
+version: "3"
+
+services:
+  mysql:
+    image: mysql:8.0.19
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: english
+    ports:
+      - "6033:3306"
+
+  vault:
+    image: vault:0.8.2
+    ports:
+      - "8200:8200"
+    cap_add:
+      - IPC_LOCK
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: f47316bd-4335-d1c9-5cc7-f353e5acba4b
+      VAULT_TOKEN: f47316bd-4335-d1c9-5cc7-f353e5acba4b
+      VAULT_ADDR: http://vault:8200
+
+  vault-seeded:
+    image: vault:0.8.2
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: f47316bd-4335-d1c9-5cc7-f353e5acba4b
+      VAULT_ADDR: http://vault:8200
+    command: sh -c "env  && vault auth $$VAULT_DEV_ROOT_TOKEN_ID && vault write secret/english secret.login=root secret.password=root"
+    links:
+      - vault
+
+  gateway:
+    image: gateway:latest
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mysql
+    links:
+      - mysql
+      - vault-seeded
+      - vault
+
+  service:
+    build: .
+    depends_on:
+      - mysql
+    ports:
+      - "8080:8080"
+    links:
+      - mysql
+      - vault-seeded
+      - vault

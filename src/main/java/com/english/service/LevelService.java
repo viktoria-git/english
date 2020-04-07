@@ -21,7 +21,6 @@ public class LevelService {
         return levelDao.getAll();
     }
 
-
     public Level get(String level) {
         return levelDao.get(level);
     }
