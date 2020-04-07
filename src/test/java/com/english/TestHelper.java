@@ -6,23 +6,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TestHelper {
-    public static Word WORD_ONE = new Word();
-    public static Word WORD_TWO = new Word();
-    public static Word WORD_FOR_SEARCH = new Word();
+    public static final Word WORD_ONE = new Word();
+    public static final Word WORD_TWO = new Word();
+    public static final Word WORD_FOR_SEARCH = new Word();
 
-    public static WordResponse WORD_RESPONSE_ONE;
-    public static WordResponse WORD_RESPONSE_TWO;
-    public static WordResponse WORD_RESPONSE_FOR_SEARCH;
+    public static final WordResponse WORD_RESPONSE_ONE;
+    public static final WordResponse WORD_RESPONSE_TWO;
+    public static final WordResponse WORD_RESPONSE_FOR_SEARCH;
 
-    public static Level LEVEL = new Level();
-    public static Topic TOPIC = new Topic();
+    public static final Level LEVEL = new Level();
+    public static final Topic TOPIC = new Topic();
 
-    public static List<Word> words = new ArrayList<>();
-    public static List<WordResponse> wordResponses = new ArrayList<>();
-    public static List<WordResponse> wordResponsesWithFoundWord = new ArrayList<>();
+    public static final List<Word> words = new ArrayList<>();
+    public static final List<WordResponse> wordResponses = new ArrayList<>();
+    public static final List<WordResponse> wordResponsesWithFoundWord = new ArrayList<>();
 
-    public static List<Level> levelList = new ArrayList<>();
-    public static List<Topic> topicList = new ArrayList<>();
+    public static final List<Level> levelList = new ArrayList<>();
+    public static final List<Topic> topicList = new ArrayList<>();
 
     static {
         WORD_ONE.setWord("dog");
