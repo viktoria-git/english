@@ -23,7 +23,6 @@ public class WordDaoImpl implements WordDao {
 
     @Override
     public void create(String word, String translate, Integer userId, Integer topicId, Integer levelId) {
-
         String sql = "INSERT INTO word(word,translate,user_id,topic_id,level_id) VALUES(?,?,?,?,?)";
         jdbcTemplate.update(sql, word, translate, userId, topicId, levelId);
     }
@@ -37,7 +36,11 @@ public class WordDaoImpl implements WordDao {
     @Override
     public Word get(Integer userId, String word) {
         String sql = "SELECT * FROM word WHERE user_id = ? and word = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{userId, word}, new WordMapper());
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{userId, word}, new WordMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override

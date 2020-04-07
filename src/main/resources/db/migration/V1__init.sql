@@ -25,8 +25,8 @@ create table if not exists `topic`(
 
 # Creating table Level
 create table if not exists level(
-                                    `id` int not null auto_increment primary key,
-                                    `level_name` varchar(20) null
+    `id` int not null auto_increment primary key,
+    `level_name` varchar(20) null
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
 alter table word add foreign key (user_id) references user(id);
