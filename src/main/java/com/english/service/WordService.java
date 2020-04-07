@@ -66,9 +66,9 @@ public class WordService {
         wordDao.removeAll(userId);
     }
 
-    public List<WordResponse> sort(String sort) {
+    public List<WordResponse> order(String sort) {
         int userId = userService.getUserId();
-        List<Word> sortedWords = wordDao.sort(userId, sort);
+        List<Word> sortedWords = wordDao.order(userId, sort);
         return createWordResponseListFromWordList(sortedWords);
     }
 

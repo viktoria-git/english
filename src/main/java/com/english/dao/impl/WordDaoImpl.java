@@ -70,7 +70,7 @@ public class WordDaoImpl implements WordDao {
 
 
     @Override
-    public List<Word> sort(Integer userId, String sort) {
+    public List<Word> order(Integer userId, String sort) {
         String sql = "SELECT * FROM word where user_id = ? order by " + sort;
         return jdbcTemplate.query(sql, new Object[]{userId}, new WordMapper());
     }

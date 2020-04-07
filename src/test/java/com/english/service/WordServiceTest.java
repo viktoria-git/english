@@ -5,8 +5,8 @@ import com.english.dao.WordDao;
 import com.english.entity.Word;
 import com.english.entity.WordResponse;
 import org.junit.Assert;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -16,24 +16,24 @@ import static com.english.TestHelper.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-class WordServiceTest {
-
+public class WordServiceTest {
     private WordDao wordDao;
     private UserService userService;
     private LevelService levelService;
     private TopicService topicService;
     private WordService wordService;
 
-    @BeforeEach
-    public void setUp(){
+    @Before
+    public void setUp() throws Exception {
         this.wordDao = mock(WordDao.class);
         this.userService = mock(UserService.class);
         this.levelService = mock(LevelService.class);
         this.topicService = mock(TopicService.class);
         this.wordService = new WordService(wordDao, topicService, levelService, userService);
     }
+
     @Test
-    void create() {
+    public void createTest() {
         when(userService.getUserId()).thenReturn(1);
         when(levelService.get("Elementary")).thenReturn(LEVEL);
         when(topicService.get("Travel")).thenReturn(TOPIC);
@@ -44,7 +44,7 @@ class WordServiceTest {
 
 
     @Test
-    void createWhenWordIsAbsent() {
+    public void createWhenWordIsAbsent() {
         when(userService.getUserId()).thenReturn(1);
         when(levelService.get("Elementary")).thenReturn(LEVEL);
         when(topicService.get("Travel")).thenReturn(TOPIC);
@@ -56,7 +56,7 @@ class WordServiceTest {
     }
 
     @Test
-    void getAllWordResponses() {
+    public void getAllWordResponsesTest() {
         when(userService.getUserId()).thenReturn(1);
         when(topicService.get(1)).thenReturn(TOPIC);
         when(levelService.get(1)).thenReturn(LEVEL);
@@ -66,7 +66,7 @@ class WordServiceTest {
     }
 
     @Test
-    void filter() {
+    public void filterTest() {
         when(userService.getUserId()).thenReturn(1);
         when(levelService.get("Elementary")).thenReturn(LEVEL);
         when(topicService.get("Travel")).thenReturn(TOPIC);
@@ -80,7 +80,7 @@ class WordServiceTest {
     }
 
     @Test
-    void get() {
+    public void getTest() {
         when(userService.getUserId()).thenReturn(1);
         when(wordDao.get(1,"dog")).thenReturn(WORD_ONE);
         Word actual = wordService.get("dog");
@@ -88,32 +88,32 @@ class WordServiceTest {
     }
 
     @Test
-    void remove() {
+    public void removeTest() {
         when(userService.getUserId()).thenReturn(1);
         wordService.remove(1);
         verify(wordDao,times(1)).remove(1,1);
     }
 
     @Test
-    void removeAll() {
+    public void removeAllTest() {
         when(userService.getUserId()).thenReturn(1);
         wordService.removeAll();
         verify(wordDao,times(1)).removeAll(1);
     }
 
     @Test
-    void sort() {
+    public void sortTest() {
         when(userService.getUserId()).thenReturn(1);
         when(topicService.get(1)).thenReturn(TOPIC);
         when(levelService.get(1)).thenReturn(LEVEL);
 
-        when(wordDao.sort(1,"word")).thenReturn(words);
-        List<WordResponse> wordResponses = wordService.sort("word");
+        when(wordDao.order(1,"word")).thenReturn(words);
+        List<WordResponse> wordResponses = wordService.order("word");
         Assert.assertEquals(TestHelper.wordResponses,wordResponses);
     }
 
     @Test
-    void findWhenWordIsAbsent() {
+    public void findWhenWordIsAbsentTest() {
         when(userService.getUserId()).thenReturn(1);
         when(wordDao.get(1,"pet")).thenReturn(null);
         when(topicService.get(1)).thenReturn(TOPIC);
@@ -125,7 +125,7 @@ class WordServiceTest {
 
 
     @Test
-    void find() {
+    public void findWhenWordIsPresentTest() {
         when(userService.getUserId()).thenReturn(1);
         when(wordDao.get(1,"cat")).thenReturn(WORD_TWO);
         when(topicService.get(1)).thenReturn(TOPIC);

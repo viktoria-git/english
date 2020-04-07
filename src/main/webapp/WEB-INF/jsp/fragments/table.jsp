@@ -7,26 +7,26 @@
     <tr class="table-success">
         <th>Word
             <form method="get" style="margin: 0;" action="${pageContext.request.contextPath}/sort">
-                <input type="hidden" name="sort" value="word">
+                <input type="hidden" name="order" value="word">
                 <jsp:include page="./buttonWithIconSort.jsp"/>
             </form>
         </th>
         <th>Translate
             <form method="get" style="margin: 0;" action="${pageContext.request.contextPath}/sort">
-                <input type="hidden" name="sort" value="translate">
+                <input type="hidden" name="order" value="translate">
                 <jsp:include page="./buttonWithIconSort.jsp"/>
             </form>
         </th>
         <th>Topic
             <form method="get" style="margin: 0;" action="${pageContext.request.contextPath}/sort">
-                <input type="hidden" name="sort" value="topic_id">
+                <input type="hidden" name="order" value="topic_id">
                 <jsp:include page="./buttonWithIconSort.jsp"/>
             </form>
         </th>
         <th>
             Level
             <form method="get" style="margin: 0;" action="${pageContext.request.contextPath}/sort">
-                <input type="hidden" name="sort" value="level_id">
+                <input type="hidden" name="order" value="level_id">
                 <jsp:include page="./buttonWithIconSort.jsp"/>
             </form>
         </th>

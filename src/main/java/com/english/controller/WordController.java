@@ -64,12 +64,13 @@ public class WordController {
         return REDIRECT;
     }
 
-    @RequestMapping(path = "/sort", method = RequestMethod.GET)
-    public String sort(Map<String, Object> model, @RequestParam String sort) {
+    @RequestMapping(path = "/order", method = RequestMethod.GET)
+    public String order(Map<String, Object> model, @RequestParam String order) {
         LOGGER.info("Get all sorted words");
-        List<WordResponse> wordResponses = wordService.sort(sort);
+        List<WordResponse> wordResponses = wordService.order(order);
         return updateListOfWordResponses(wordResponses, model);
     }
+
 
     @RequestMapping(path = "/filter", method = RequestMethod.GET)
     public String filter(Map<String, Object> model,
