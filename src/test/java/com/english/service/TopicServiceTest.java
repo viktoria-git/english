@@ -9,8 +9,7 @@ import org.mockito.Mockito;
 
 import java.util.List;
 
-import static com.english.TestHelper.TOPIC;
-import static com.english.TestHelper.topicList;
+import static com.english.utils.TestHelper.topicList;
 import static org.mockito.Mockito.when;
 
 public class TopicServiceTest {
@@ -33,15 +32,15 @@ public class TopicServiceTest {
 
     @Test
     public void getByNameTest() {
-        when(topicDao.get("Travel")).thenReturn(TOPIC);
+        when(topicDao.get("Travel")).thenReturn(topicList.get(0));
         Topic actual = topicService.get("Travel");
-        Assert.assertEquals(TOPIC, actual);
+        Assert.assertEquals(topicList.get(0), actual);
     }
 
     @Test
     public void getByIdTest() {
-        when(topicDao.get(1)).thenReturn(TOPIC);
+        when(topicDao.get(1)).thenReturn(topicList.get(0));
         Topic actual = topicService.get(1);
-        Assert.assertEquals(TOPIC, actual);
+        Assert.assertEquals(topicList.get(0), actual);
     }
 }

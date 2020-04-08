@@ -14,6 +14,16 @@ public class WordResponse {
     public WordResponse() {
     }
 
+    public WordResponse(Integer id, String word, String translate,String color, Boolean allocated, String topic, String level) {
+        this.id = id;
+        this.word = word;
+        this.translate = translate;
+        this.allocated = allocated;
+        this.color = color;
+        this.topic = topic;
+        this.level = level;
+    }
+
     public WordResponse(Word word, Topic topic, Level level) {
         this.id = word.getId();
         this.word = word.getWord();
@@ -88,7 +98,7 @@ public class WordResponse {
         return allocated == wordResponse.allocated &&
                 Objects.equals(id, wordResponse.id) &&
                 Objects.equals(word, wordResponse.word) &&
-                Objects.equals(translate, wordResponse.translate) &&
+//                Objects.equals(translate, wordResponse.translate) &&
                 Objects.equals(color, wordResponse.color) &&
                 Objects.equals(topic, wordResponse.topic) &&
                 Objects.equals(level, wordResponse.level);
@@ -96,6 +106,8 @@ public class WordResponse {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, word, translate, color, allocated, topic, level);
+        return Objects.hash(id, word,
+//                translate,
+                color, allocated, topic, level);
     }
 }

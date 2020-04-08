@@ -9,8 +9,7 @@ import org.mockito.Mockito;
 
 import java.util.List;
 
-import static com.english.TestHelper.LEVEL;
-import static com.english.TestHelper.levelList;
+import static com.english.utils.TestHelper.levelList;
 import static org.mockito.Mockito.when;
 
 public class LevelServiceTest {
@@ -32,15 +31,15 @@ public class LevelServiceTest {
 
     @Test
     public void getByName() {
-        when(levelDao.get("Elementary")).thenReturn(LEVEL);
+        when(levelDao.get("Elementary")).thenReturn(levelList.get(0));
         Level actualResult = levelService.get("Elementary");
-        Assert.assertEquals(LEVEL, actualResult);
+        Assert.assertEquals(levelList.get(0), actualResult);
     }
 
     @Test
     public void getById() {
-        when(levelDao.get(1)).thenReturn(LEVEL);
+        when(levelDao.get(1)).thenReturn(levelList.get(0));
         Level actualResult = levelService.get(1);
-        Assert.assertEquals(LEVEL, actualResult);
+        Assert.assertEquals(levelList.get(0), actualResult);
     }
 }

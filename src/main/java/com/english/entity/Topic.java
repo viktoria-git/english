@@ -7,6 +7,15 @@ public class Topic {
     private String topicName;
     private String color;
 
+    public Topic() {
+    }
+
+    public Topic(Integer id, String topicName, String color) {
+        this.id = id;
+        this.topicName = topicName;
+        this.color = color;
+    }
+
     public String getColor() {
         return color;
     }

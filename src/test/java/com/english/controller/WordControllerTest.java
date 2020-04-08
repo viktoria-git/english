@@ -1,79 +1,70 @@
 package com.english.controller;
 
 import com.english.entity.WordResponse;
-import com.english.service.LevelService;
-import com.english.service.TopicService;
-import com.english.service.WordService;
+import com.english.utils.TestDataSourceConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlConfig;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.client.ExpectedCount;
+import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static com.english.TestHelper.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import java.net.URI;
 
+import static com.english.utils.TestHelper.*;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = {TestDataSourceConfig.class})
+@WebAppConfiguration
+@Sql(scripts = "classpath:test.sql", config = @SqlConfig(encoding = "UTF-8"))
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class WordControllerTest {
+    @Autowired
+    private WebApplicationContext context;
+    @Autowired
+    private RestTemplate restTemplate;
 
     private MockMvc mockMvc;
+    private MockRestServiceServer mockServer;
 
-    private WordService wordService;
-    private TopicService topicService;
-    private LevelService levelService;
-    private ObjectMapper objectMapper;
+    private final ObjectMapper mapper = new ObjectMapper();
 
     @Before
-    public void setUp() {
-        this.wordService = Mockito.mock(WordService.class);
-        this.topicService = Mockito.mock(TopicService.class);
-        this.levelService = Mockito.mock(LevelService.class);
-        this.mockMvc = MockMvcBuilders.standaloneSetup(new WordController(wordService)).build();
-        this.objectMapper = new ObjectMapper();
-
+    public void setup() {
+        mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
+        mockServer = MockRestServiceServer.createServer(restTemplate);
     }
 
     @Test
     public void getAllTest() throws Exception {
-        when(wordService.getAllWordResponses(1)).thenReturn(wordResponses);
-        when(topicService.getAll()).thenReturn(topicList);
-        when(levelService.getAll()).thenReturn(levelList);
         String actual = mockMvc.perform(get("/vocabulary")
                 .param("userId", "1"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
-        WordResponse[] result = objectMapper.readValue(actual, WordResponse[].class);
-
-        Assert.assertEquals(2, result.length);
-        Assert.assertEquals(result[0].getWord(), "dog");
-        Assert.assertEquals(result[1].getWord(), "cat");
-    }
-
-    @Test
-    public void addTest() throws Exception {
-        mockMvc.perform(post("/add")
-                .param("userId", "1")
-                .param("word", "cat")
-                .param("translate", "кот")
-                .param("topic", "Other")
-                .param("level", "Elementary"))
-                .andExpect(status().isOk());
-        verify(wordService, times(1)).create(1, "cat", "Other", "Elementary");
-    }
-
-    @Test
-    public void removeTest() throws Exception {
-        mockMvc.perform(delete("/remove")
-                .param("userId", "1")
-                .param("id", "1"))
-                .andExpect(status().isOk());
-        verify(wordService, times(1)).remove(1, 1);
+        WordResponse[] result = mapper.readValue(actual, WordResponse[].class);
+        Assert.assertArrayEquals(allWordResponses.toArray(), result);
     }
 
     @Test
@@ -81,65 +72,137 @@ public class WordControllerTest {
         mockMvc.perform(delete("/removeAll")
                 .param("userId", "1"))
                 .andExpect(status().isOk());
-        verify(wordService, times(1)).removeAll(1);
+
+        mockMvc.perform(get("/vocabulary")
+                .param("userId", "1"))
+                .andExpect(content().string("[]"));
     }
 
     @Test
-    public void orderTest() throws Exception {
-        when(wordService.order(1, "translate")).thenReturn(wordResponses);
-        when(topicService.getAll()).thenReturn(topicList);
-        when(levelService.getAll()).thenReturn(levelList);
-        String actual = mockMvc.perform(get("/order")
+    public void removeTest() throws Exception {
+        mockMvc.perform(delete("/remove")
                 .param("userId", "1")
-                .param("order", "translate"))
+                .param("id", "125"))
+                .andExpect(status().isOk());
+
+        String actual = mockMvc.perform(get("/vocabulary")
+                .param("userId", "1"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
-        WordResponse[] result = objectMapper.readValue(actual, WordResponse[].class);
-        Assert.assertEquals(2, result.length);
+        Assert.assertFalse(actual.contains("dog"));
     }
 
     @Test
-    public void filterTest() throws Exception {
-        when(wordService.filter(1, "Travel", "Elementary")).thenReturn(wordResponses);
-        when(topicService.getAll()).thenReturn(topicList);
-        when(levelService.getAll()).thenReturn(levelList);
+    public void createTest() throws Exception {
+        String translate = "сброс / убирать";
+        mockServer.expect(ExpectedCount.once(),
+                requestTo(new URI("http://localhost:3000/translate/clear")))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withStatus(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(mapper.writeValueAsString(translate))
+                );
+
+        mockMvc.perform(post("/add")
+                .param("userId", "1")
+                .param("word", "clear")
+                .param("topic", "Other")
+                .param("level", "Elementary"))
+                .andExpect(status().isOk());
+
+        String actual = mockMvc.perform(get("/vocabulary")
+                .param("userId", "1"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        Assert.assertTrue(actual.contains("clear"));
+    }
+
+    @Test
+    public void findIfWordIsPresentTest() throws Exception {
+        String actual = mockMvc.perform(get("/find")
+                .param("userId", "1")
+                .param("searchedWord", "cat"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        WordResponse[] result = mapper.readValue(actual, WordResponse[].class);
+        Assert.assertArrayEquals(allWordResponsesWithSearchedWord.toArray(), result);
+    }
+
+
+    @Test
+    public void findIfWordIsAbsentTest() throws Exception {
+        String actual = mockMvc.perform(get("/find")
+                .param("userId", "1")
+                .param("searchedWord", "main"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        WordResponse[] result = mapper.readValue(actual, WordResponse[].class);
+        Assert.assertArrayEquals(allWordResponses.toArray(), result);
+    }
+
+    @Test
+    public void orderByWordTest() throws Exception {
+        String actual = mockMvc.perform(get("/order")
+                .param("userId", "1")
+                .param("order", "word"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        WordResponse[] result = mapper.readValue(actual, WordResponse[].class);
+        Assert.assertArrayEquals(allSortedWordResponsesByWord.toArray(), result);
+    }
+
+    @Test
+    public void orderByLevelTest() throws Exception {
+        String actual = mockMvc.perform(get("/order")
+                .param("userId", "1")
+                .param("order", "level_id"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        WordResponse[] result = mapper.readValue(actual, WordResponse[].class);
+        Assert.assertArrayEquals(allSortedWordResponsesByLevel.toArray(), result);
+    }
+
+    @Test
+    public void filterByLevelTest() throws Exception {
+        String actual = mockMvc.perform(get("/filter")
+                .param("userId", "1")
+                .param("topic", "0")
+                .param("level", "Pre-Intermediate"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        WordResponse[] result = mapper.readValue(actual, WordResponse[].class);
+        Assert.assertArrayEquals(allFilteredWordResponsesByLevel.toArray(), result);
+    }
+
+    @Test
+    public void filterByTopicTest() throws Exception {
+        String actual = mockMvc.perform(get("/filter")
+                .param("userId", "1")
+                .param("topic", "Other")
+                .param("level", "0"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        WordResponse[] result = mapper.readValue(actual, WordResponse[].class);
+        Assert.assertArrayEquals(allFilteredWordResponsesByTopic.toArray(), result);
+    }
+
+    @Test
+    public void filterByTopicAndLevelTest() throws Exception {
         String actual = mockMvc.perform(get("/filter")
                 .param("userId", "1")
                 .param("topic", "Travel")
                 .param("level", "Elementary"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
-        WordResponse[] result = objectMapper.readValue(actual, WordResponse[].class);
-        Assert.assertEquals(2, result.length);
-    }
 
-    @Test
-    public void findTest() throws Exception {
-        when(wordService.find(1, "cat")).thenReturn(wordResponses);
-        when(topicService.getAll()).thenReturn(topicList);
-        when(levelService.getAll()).thenReturn(levelList);
-        String actual = mockMvc.perform(get("/find")
-                .param("userId", "1")
-                .param("searchedWord", "cat"))
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
-        WordResponse[] result = objectMapper.readValue(actual, WordResponse[].class);
-        Assert.assertEquals(2, result.length);
-    }
-
-    @Test
-    public void findWhenWordIsAbsentTest() throws Exception {
-        when(wordService.find(1, "cat")).thenReturn(null);
-        when(wordService.getAllWordResponses(1)).thenReturn(wordResponses);
-        when(topicService.getAll()).thenReturn(topicList);
-        when(levelService.getAll()).thenReturn(levelList);
-        String actual = mockMvc.perform(get("/find")
-                .param("userId", "1")
-                .param("searchedWord", "cat"))
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
-        WordResponse[] result = objectMapper.readValue(actual, WordResponse[].class);
-        Assert.assertEquals(2, result.length);
-        verify(wordService, times(1)).getAllWordResponses(1);
+        WordResponse[] result = mapper.readValue(actual, WordResponse[].class);
+        Assert.assertArrayEquals(allFilteredWordResponsesByTopicAndLevel.toArray(), result);
     }
 }

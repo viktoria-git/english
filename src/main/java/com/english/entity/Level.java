@@ -5,6 +5,14 @@ public class Level {
     private Integer id;
     private String levelName;
 
+    public Level() {
+    }
+
+    public Level(Integer id, String levelName) {
+        this.id = id;
+        this.levelName = levelName;
+    }
+
     public Integer getId() {
         return id;
     }

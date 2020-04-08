@@ -4,8 +4,6 @@ public class Word {
     private Integer id;
     private String word;
     private String translate;
-    private String color;
-    private Integer userId;
     private Integer topicId;
     private Integer levelId;
 
@@ -23,14 +21,6 @@ public class Word {
 
     public void setTopicId(Integer topicId) {
         this.topicId = topicId;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
     }
 
     public Integer getId() {
@@ -55,13 +45,5 @@ public class Word {
 
     public void setTranslate(String translate) {
         this.translate = translate;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
     }
 }

@@ -16,7 +16,8 @@ import java.util.stream.Collectors;
 @Service
 public class WordService {
     private static final String URL = "http://localhost:3000/translate/";
-    private final RestTemplate template = new RestTemplate();
+
+    private RestTemplate template;
 
     private static final Integer DEFAULT_LEVEL = 1;
     private static final Integer DEFAULT_TOPIC = 10;
@@ -95,6 +96,11 @@ public class WordService {
             return wordResponses;
 
         } else return getAllWordResponses(userId);
+    }
+
+    @Autowired
+    public void setTemplate(RestTemplate template) {
+        this.template = template;
     }
 
     private WordResponse createWordResponseFromWord(Word word) {

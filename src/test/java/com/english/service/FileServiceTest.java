@@ -31,14 +31,14 @@ public class FileServiceTest {
     public void uploadFileTestWithTranslate() throws IOException {
         MultipartFile multipartFile = getMultipartFile("test_with_translate.csv");
         fileService.uploadFile(1, multipartFile);
-        verify(wordService, times(3)).create(anyInt(), anyString(), anyString(), anyString(), anyString());
+        verify(wordService, times(1)).create(anyInt(), anyString(), anyString(), anyString(), anyString());
     }
 
     @Test
     public void uploadFileTestWithoutTranslate() throws IOException {
         MultipartFile multipartFile = getMultipartFile("test_without_translate.csv");
         fileService.uploadFile(1, multipartFile);
-        verify(wordService, times(3)).create(anyInt(), anyString(), anyString(), anyString());
+        verify(wordService, times(1)).create(anyInt(), anyString(), anyString(), anyString());
     }
 
     @Test(expected = RuntimeException.class)
