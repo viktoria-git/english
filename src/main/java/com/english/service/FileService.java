@@ -25,7 +25,7 @@ public class FileService {
         this.wordService = service;
     }
 
-    public void uploadFile(Integer userId, MultipartFile file) {
+    public void uploadFile(Integer userId, MultipartFile file) throws IOException {
         if (Objects.requireNonNull(file.getOriginalFilename()).contains("csv")) {
             LOGGER.info("File: {} uploaded successfully", file.getOriginalFilename());
             fillFromFile(userId, file);
@@ -35,15 +35,15 @@ public class FileService {
         }
     }
 
-    private void fillFromFile(String filename) throws IOException {
-        Stream<String> lines = Files.lines(Paths.get(UPLOADED_FOLDER + filename));
+    private void fillFromFile(Integer userId, MultipartFile file) throws IOException {
+        Stream<String> lines = new BufferedReader(new InputStreamReader(file.getInputStream())).lines();
         List<String> words = Objects.requireNonNull(lines).collect(Collectors.toList());
         for (String line : words) {
             String[] s = line.split(",");
             if (s.length == 3) {
-                wordService.create(s[0], s[1], s[2]);
+                wordService.create(userId, s[0], s[1], s[2]);
             } else {
-                wordService.create(s[0], s[1], s[2], s[3]);
+                wordService.create(userId, s[0], s[1], s[2], s[3]);
             }
         }
     }

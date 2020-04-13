@@ -94,13 +94,13 @@ public class WordControllerTest {
 
     @Test
     public void createTest() throws Exception {
-        String translate = "сброс / убирать";
+        URI uri = new URI("http://localhost:3000/translate/clear");
         mockServer.expect(ExpectedCount.once(),
-                requestTo(new URI("http://localhost:3000/translate/clear")))
+                requestTo(uri))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withStatus(HttpStatus.OK)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .body(mapper.writeValueAsString(translate))
+                        .body(mapper.writeValueAsString(EXPECTED_TRANSLATE_CLEAR))
                 );
 
         mockMvc.perform(post("/add")
@@ -129,7 +129,6 @@ public class WordControllerTest {
         WordResponse[] result = mapper.readValue(actual, WordResponse[].class);
         Assert.assertArrayEquals(allWordResponsesWithSearchedWord.toArray(), result);
     }
-
 
     @Test
     public void findIfWordIsAbsentTest() throws Exception {

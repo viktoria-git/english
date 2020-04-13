@@ -8,6 +8,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class TestHelper {
+
+    public static final String EXPECTED_TRANSLATE_CLEAR = "сброс / убирать";
+    public static final String EXPECTED_TRANSLATE_RAIN = "дождь / литься";
+
     public static final List<Level> levelList = new ArrayList<>();
     public static final List<Topic> topicList = new ArrayList<>();
 

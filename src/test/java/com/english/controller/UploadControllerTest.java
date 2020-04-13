@@ -36,7 +36,6 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -67,7 +66,7 @@ public class UploadControllerTest {
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withStatus(HttpStatus.OK)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .body(mapper.writeValueAsString("дождь / литься"))
+                        .body(mapper.writeValueAsString(EXPECTED_TRANSLATE_RAIN))
                 );
 
         File file = new File("src/test/resources/test_without_translate.csv");
@@ -76,7 +75,6 @@ public class UploadControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.multipart("/upload")
                 .file(multipartFile)
                 .param("userId", "1"))
-                .andDo(print())
                 .andExpect(status().isOk());
 
         String actual = mockMvc.perform(get("/vocabulary")
@@ -96,7 +94,6 @@ public class UploadControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.multipart("/upload")
                 .file(multipartFile)
                 .param("userId", "1"))
-                .andDo(print())
                 .andExpect(status().isOk());
 
         String actual = mockMvc.perform(get("/vocabulary")

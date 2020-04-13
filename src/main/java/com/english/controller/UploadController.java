@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @RestController
 public class UploadController {
 
@@ -22,9 +24,10 @@ public class UploadController {
     }
 
     @PostMapping(value = "/upload")
-    public String uploadFile(@RequestParam("file") MultipartFile file) {
+    public String uploadFile(@RequestParam Integer userId,
+                             @RequestParam("file") MultipartFile file) throws IOException {
         LOGGER.info("Fill with data from a file: {}", file.getOriginalFilename());
-        fileService.uploadFile(file);
+        fileService.uploadFile(userId, file);
         return REDIRECT;
     }
 
